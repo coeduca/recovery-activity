@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actividades de Recuperación | English Ecosystem</title>
+  <style>
+    /* RESET BRUTALISTA */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #FFE66D; /* Amarillo idéntico al fondo de Rigo */
+      color: #1a1a1a;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* CONTENEDOR PRINCIPAL NEO-BRUTALISTA */
+    .brutal-container {
+      background-color: #ffffff;
+      border: 4px solid #1a1a1a;
+      box-shadow: 12px 12px 0px #1a1a1a;
+      padding: 2.5rem;
+      max-width: 550px;
+      width: 100%;
+      transform: rotate(-0.5deg);
+    }
+
+    /* HEADER */
+    h1 {
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      font-size: 3.2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      line-height: 0.9;
+      margin-bottom: 1.5rem;
+      background-color: #FF6B9D; /* Rosa Rigo */
+      color: white;
+      padding: 12px 18px;
+      border: 4px solid #1a1a1a;
+      display: inline-block;
+      transform: rotate(1.5deg);
+      box-shadow: 6px 6px 0px #1a1a1a;
+    }
+
+    p {
+      font-size: 1.15rem;
+      font-weight: 900;
+      margin-bottom: 2rem;
+      line-height: 1.4;
+      border-left: 6px solid #4ECDC4; /* Teal Rigo */
+      padding-left: 12px;
+    }
+
+    /* FORMULARIOS Y CONTROLES */
+    .form-group {
+      margin-bottom: 1.8rem;
+    }
+
+    label {
+      display: block;
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1rem;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      font-weight: bold;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 1rem;
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: 4px solid #1a1a1a;
+      background-color: #ffffff;
+      outline: none;
+      box-shadow: 5px 5px 0px #1a1a1a;
+      transition: all 0.1s ease;
+    }
+
+    input[type="text"] {
+      background-color: #A8E6CF; /* Verde claro Rigo */
+    }
+
+    input[type="text"]:focus {
+      background-color: #4ECDC4; /* Teal Rigo */
+      box-shadow: 8px 8px 0px #1a1a1a;
+      transform: translate(-2px, -2px);
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 2.5rem;
+    }
+
+    select:focus {
+      box-shadow: 8px 8px 0px #FF6B9D;
+    }
+
+    /* BOTÓN BRUTALISTA */
+    .brutal-btn {
+      display: block;
+      width: 100%;
+      padding: 1.2rem;
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      color: #ffffff;
+      background-color: #1a1a1a;
+      border: 4px solid #1a1a1a;
+      cursor: pointer;
+      box-shadow: 6px 6px 0px #4ECDC4;
+      transition: transform 0.05s ease, box-shadow 0.05s ease;
+    }
+
+    .brutal-btn:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 9px 9px 0px #FF6B9D;
+    }
+
+    .brutal-btn:active {
+      transform: translate(6px, 6px);
+      box-shadow: 0px 0px 0px #1a1a1a;
+    }
+
+    /* DECORACIONES / BADGES */
+    .badge-container {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 6px 12px;
+      font-weight: 900;
+      border: 3px solid #1a1a1a;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      box-shadow: 3px 3px 0px #1a1a1a;
+    }
+
+    .badge-teal { background-color: #4ECDC4; }
+    .badge-pink { background-color: #FF6B9D; color: white; }
+    .badge-green { background-color: #A8E6CF; }
+
+    /* RESPONSIVE */
+    @media (max-width: 480px) {
+      body { padding: 1rem; }
+      h1 { font-size: 2.3rem; }
+      .brutal-container { padding: 1.5rem; }
+    }
+  </style>
+  <script src="rigo.js"></script>
+</head>
+<body>
+
+  <div class="brutal-container">
+    <h1>RECOVERY!</h1>
+    <p>Bienvenido al portal de Actividades de Recuperación. ¡Rigo ya está listo en su esquina para darte los mejores hints!</p>
+    
+    <div class="form-group">
+      <label for="grade-select">1. Selecciona tu Grado:</label>
+      <select id="grade-select">
+        <option value="Séptimo">Séptimo Grado</option>
+        <option value="Octavo">Octavo Grado</option>
+        <option value="Noveno" selected>Noveno Grado</option>
+        <option value="Primer Año">Primer Año de Bachillerato</option>
+        <option value="Segundo Año">Segundo Año de Bachillerato</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="student-nie">2. Ingresa tu NIE:</label>
+      <input type="text" id="student-nie" placeholder="Ej. 1048293" autocomplete="off" maxlength="12">
+    </div>
+
+    <button class="brutal-btn" id="enter-btn">¡INGRESAR AHORA!</button>
+
+    <div class="badge-container">
+      <span class="badge badge-teal">English Ecosystem</span>
+      <span class="badge badge-pink">Mascot V2</span>
+      <span class="badge badge-green">GitHub Pages</span>
+    </div>
+  </div>
+
+  <rigo-mascot id="rigo-companion" grade="Noveno"></rigo-mascot>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const rigo = document.getElementById('rigo-companion');
+      const gradeSelect = document.getElementById('grade-select');
+      const nieInput = document.getElementById('student-nie');
+      const enterBtn = document.getElementById('enter-btn');
+
+      // 1. Ejecutar el saludo inicial oficial de Rigo ("Escribe tu NIE") tras un leve delay de renderizado
+      setTimeout(() => {
+        if (rigo && typeof rigo.welcome === 'function') {
+          rigo.welcome();
+        }
+      }, 1500);
+
+      // 2. Escuchar cambios de grado para usar la API pública rigo.setGrade() dinámicamente
+      gradeSelect.addEventListener('change', (e) => {
+        const selectedGrade = e.target.value;
+        if (rigo && typeof rigo.setGrade === 'function') {
+          rigo.setGrade(selectedGrade);
+          rigo.setEmotion('thinking');
+          rigo.say(`Configurado para: ${selectedGrade}`, 2500);
+        }
+      });
+
+      // 3. Validar e interactuar al presionar el botón de inicio (loginSuccess)
+      enterBtn.addEventListener('click', () => {
+        const nieValue = nieInput.value.trim();
+
+        if (nieValue === "") {
+          // Si el estudiante no escribe nada, Rigo se enoja en su estilo animado y le avisa
+          if (rigo && typeof rigo.say === 'function') {
+            rigo.setEmotion('angry');
+            rigo.say("¡Oye! Rigo dice que no puedes entrar sin poner tu NIE.", 4000);
+          } else {
+            alert("Por favor ingresa tu NIE.");
+          }
+          nieInput.focus();
+          return;
+        }
+
+        // Si el NIE existe, ejecutar la API de celebración por ingreso exitoso
+        if (rigo && typeof rigo.loginSuccess === 'function') {
+          rigo.loginSuccess(`Estudiante NIE-${nieValue}`);
+          
+          // Efecto visual en el botón
+          enterBtn.disabled = true;
+          enterBtn.textContent = "CARGANDO ACTIVIDADES...";
+          enterBtn.style.backgroundColor = "#5AC850"; // Verde éxito de Rigo
+
+          // Invitar al juego final o redirigir después de que termine la animación
+          setTimeout(() => {
+            if (typeof rigo.inviteGame === 'function') {
+              rigo.inviteGame();
+            }
+            
+            // NOTA: Aquí puedes redirigir a tu página de actividades real:
+            // window.location.href = "actividades/index.html"; 
+          }, 4200);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
