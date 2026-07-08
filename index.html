@@ -3,16 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Favicon SVG en línea para asegurar que funcione sin depender de un archivo externo -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
   <title>Actividades de Recuperación | English Ecosystem</title>
   <style>
     /* RESET BRUTALISTA */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Courier New', Courier, monospace;
@@ -27,7 +22,6 @@
       overflow-x: hidden;
     }
 
-    /* CONTENEDOR PRINCIPAL NEO-BRUTALISTA */
     .brutal-container {
       background-color: #ffffff;
       border: 4px solid #1a1a1a;
@@ -38,7 +32,6 @@
       transform: rotate(-0.5deg);
     }
 
-    /* HEADER */
     h1 {
       font-family: 'Impact', 'Arial Black', sans-serif;
       font-size: 3.2rem;
@@ -64,10 +57,7 @@
       padding-left: 12px;
     }
 
-    /* FORMULARIOS Y CONTROLES */
-    .form-group {
-      margin-bottom: 1.8rem;
-    }
+    .form-group { margin-bottom: 1.8rem; }
 
     label {
       display: block;
@@ -91,12 +81,9 @@
       transition: all 0.1s ease;
     }
 
-    input[type="text"] {
-      background-color: #A8E6CF; /* Verde claro Rigo */
-    }
-
+    input[type="text"] { background-color: #A8E6CF; }
     input[type="text"]:focus {
-      background-color: #4ECDC4; /* Teal Rigo */
+      background-color: #4ECDC4;
       box-shadow: 8px 8px 0px #1a1a1a;
       transform: translate(-2px, -2px);
     }
@@ -110,12 +97,8 @@
       background-size: 16px;
       padding-right: 2.5rem;
     }
+    select:focus { box-shadow: 8px 8px 0px #FF6B9D; }
 
-    select:focus {
-      box-shadow: 8px 8px 0px #FF6B9D;
-    }
-
-    /* BOTÓN BRUTALISTA */
     .brutal-btn {
       display: block;
       width: 100%;
@@ -130,25 +113,21 @@
       box-shadow: 6px 6px 0px #4ECDC4;
       transition: transform 0.05s ease, box-shadow 0.05s ease;
     }
-
     .brutal-btn:hover {
       transform: translate(-3px, -3px);
       box-shadow: 9px 9px 0px #FF6B9D;
     }
-
     .brutal-btn:active {
       transform: translate(6px, 6px);
       box-shadow: 0px 0px 0px #1a1a1a;
     }
 
-    /* DECORACIONES / BADGES */
     .badge-container {
       margin-top: 2.5rem;
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
     }
-
     .badge {
       padding: 6px 12px;
       font-weight: 900;
@@ -157,19 +136,64 @@
       text-transform: uppercase;
       box-shadow: 3px 3px 0px #1a1a1a;
     }
-
     .badge-teal { background-color: #4ECDC4; }
     .badge-pink { background-color: #FF6B9D; color: white; }
     .badge-green { background-color: #A8E6CF; }
 
-    /* RESPONSIVE */
+    /* MODAL BRUTALISTA COEDUCA */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(26, 26, 26, 0.9);
+      z-index: 10000;
+      display: flex; justify-content: center; align-items: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .brutal-modal {
+      background-color: #FF6B9D;
+      border: 4px solid #1a1a1a;
+      box-shadow: 10px 10px 0px #1a1a1a;
+      padding: 2rem;
+      max-width: 440px;
+      width: 90%;
+      text-align: center;
+      color: #ffffff;
+      transform: scale(0.9) rotate(-1deg);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .modal-overlay.active .brutal-modal { transform: scale(1) rotate(1deg); }
+
+    .brutal-modal h2 {
+      font-family: 'Impact', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      -webkit-text-stroke: 1px #1a1a1a;
+      color: #FFE66D;
+    }
+    .brutal-modal p {
+      border-left: none; padding-left: 0; color: #1a1a1a;
+      background: #ffffff; padding: 12px; border: 3px solid #1a1a1a;
+      font-size: 1.05rem; font-weight: bold;
+    }
+    .modal-close-btn {
+      margin-top: 1.5rem; background-color: #1a1a1a; color: white;
+      padding: 0.8rem 1.5rem; font-family: 'Arial Black', sans-serif;
+      text-transform: uppercase; border: none; cursor: pointer;
+      box-shadow: 4px 4px 0px #4ECDC4; width: 100%;
+    }
+    .modal-close-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px #ffffff; }
+
     @media (max-width: 480px) {
       body { padding: 1rem; }
       h1 { font-size: 2.3rem; }
       .brutal-container { padding: 1.5rem; }
     }
   </style>
-  <!-- Inclusión de tu script existente -->
+  <!-- Cargamos primero la base de datos externa y luego a Rigo -->
+  <script src="students.js"></script>
   <script src="rigo.js"></script>
 </head>
 <body>
@@ -178,7 +202,6 @@
     <h1>RECOVERY!</h1>
     <p>Bienvenido al portal de Actividades de Recuperación. ¡Rigo ya está listo en su esquina para darte los mejores hints!</p>
     
-    <!-- Selector de Grado para interactuar con rigo.setGrade() -->
     <div class="form-group">
       <label for="grade-select">1. Selecciona tu Grado:</label>
       <select id="grade-select">
@@ -190,16 +213,13 @@
       </select>
     </div>
 
-    <!-- Entrada de NIE requerido por el método rigo.welcome() -->
     <div class="form-group">
       <label for="student-nie">2. Ingresa tu NIE:</label>
-      <input type="text" id="student-nie" placeholder="Ej. 1048293" autocomplete="off" maxlength="12">
+      <input type="text" id="student-nie" placeholder="Ej. 20062471" autocomplete="off" maxlength="12">
     </div>
 
-    <!-- Botón de Acción -->
     <button class="brutal-btn" id="enter-btn">¡INGRESAR AHORA!</button>
 
-    <!-- Badges decorativos estilo Brutalistas (Actualizados) -->
     <div class="badge-container">
       <span class="badge badge-teal">Teacher Eliseo</span>
       <span class="badge badge-pink">English Class</span>
@@ -207,67 +227,136 @@
     </div>
   </div>
 
-  <!-- Declaración de Rigo en el DOM -->
+  <!-- ALERTA DE RECTÁNGULO MODAL BRUTALISTA -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="brutal-modal">
+      <h2>ALERT!</h2>
+      <p id="modal-message">No se encontraron actividades vigentes para los parámetros ingresados.</p>
+      <button class="modal-close-btn" id="modal-close">CERRAR VENTANA</button>
+    </div>
+  </div>
+
   <rigo-mascot id="rigo-companion" grade="Noveno"></rigo-mascot>
 
   <script>
+    // CRONOGRAMA GENERAL DE ACTIVIDADES POR GRADO (Configuras todo aquí)
+    // Cuando quieras lanzar una nueva actividad, solo cambias los rangos de fechas.
+    const ACTIVITIES_TIMELINE = {
+      "Séptimo": [
+        { start: "2026-01-01", end: "2026-05-15", url: "activities/septimo/recuperacion1.html" },
+        { start: "2026-05-16", end: "2026-08-30", url: "activities/septimo/recuperacion2.html" } // Activo hoy
+      ],
+      "Octavo": [
+        { start: "2026-05-16", end: "2026-08-30", url: "activities/octavo/recuperacion2.html" }
+      ],
+      "Noveno": [
+        { start: "2026-01-01", end: "2026-05-15", url: "activities/noveno/recuperacion1.html" },
+        { start: "2026-05-16", end: "2026-08-30", url: "activities/noveno/recuperacion2.html" } // Activo hoy
+      ],
+      "Primer Año": [
+        { start: "2026-05-16", end: "2026-08-30", url: "activities/primer_ano/recuperacion2.html" }
+      ],
+      "Segundo Año": [
+        { start: "2026-05-16", end: "2026-08-30", url: "activities/segundo_ano/recuperacion2.html" }
+      ],
+      "Maestro": [
+        { start: "2026-01-01", end: "2026-12-31", url: "activities/dashboard_teacher.html" }
+      ]
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
       const rigo = document.getElementById('rigo-companion');
       const gradeSelect = document.getElementById('grade-select');
       const nieInput = document.getElementById('student-nie');
       const enterBtn = document.getElementById('enter-btn');
+      
+      const modalOverlay = document.getElementById('modal-overlay');
+      const modalMessage = document.getElementById('modal-message');
+      const modalClose = document.getElementById('modal-close');
 
-      // 1. Ejecutar el saludo inicial oficial de Rigo tras un leve delay de renderizado
+      // Bienvenida de Rigo[cite: 1]
       setTimeout(() => {
-        if (rigo && typeof rigo.welcome === 'function') {
-          rigo.welcome();
-        }
+        if (rigo && typeof rigo.welcome === 'function') rigo.welcome();[cite: 1]
       }, 1500);
 
-      // 2. Escuchar cambios de grado para usar la API pública rigo.setGrade() dinámicamente
+      // Sincronizar el select de grados con el filtro de Rigo[cite: 1]
       gradeSelect.addEventListener('change', (e) => {
         const selectedGrade = e.target.value;
         if (rigo && typeof rigo.setGrade === 'function') {
-          rigo.setGrade(selectedGrade);
-          rigo.setEmotion('thinking');
-          rigo.say(`Configurado para: ${selectedGrade}`, 2500);
+          rigo.setGrade(selectedGrade);[cite: 1]
+          rigo.setEmotion('thinking');[cite: 1]
+          rigo.say(`Configurado para: ${selectedGrade}`, 2500);[cite: 1]
         }
       });
 
-      // 3. Validar e interactuar al presionar el botón de inicio (loginSuccess)
+      modalClose.addEventListener('click', () => {
+        modalOverlay.classList.remove('active');
+        if (rigo) rigo.setEmotion('neutral');[cite: 1]
+      });
+
+      // PROCESADOR DE ACCESO CENTRALIZADO
       enterBtn.addEventListener('click', () => {
         const nieValue = nieInput.value.trim();
+        const selectedGrade = gradeSelect.value;
 
         if (nieValue === "") {
-          // Si el estudiante no escribe nada, Rigo se enoja en su estilo animado y le avisa
           if (rigo && typeof rigo.say === 'function') {
-            rigo.setEmotion('angry');
-            rigo.say("¡Oye! Rigo dice que no puedes entrar sin poner tu NIE.", 4000);
-          } else {
-            alert("Por favor ingresa tu NIE.");
+            rigo.setEmotion('angry');[cite: 1]
+            rigo.say("¡Oye! Rigo dice que no puedes entrar sin poner tu NIE.", 4000);[cite: 1]
           }
           nieInput.focus();
           return;
         }
 
-        // Si el NIE existe, ejecutar la API de celebración por ingreso exitoso
-        if (rigo && typeof rigo.loginSuccess === 'function') {
-          rigo.loginSuccess(`Estudiante NIE-${nieValue}`);
-          
-          // Efecto visual en el botón
-          enterBtn.disabled = true;
-          enterBtn.textContent = "CARGANDO ACTIVIDADES...";
-          enterBtn.style.backgroundColor = "#5AC850"; // Verde éxito de Rigo
+        // 1. Acceder al objeto global cargado desde students.js
+        const db = window.STUDENTS || {};[cite: 3]
+        const student = db[nieValue];[cite: 3]
 
-          // Invitar al juego final o redirigir después de que termine la animación
-          setTimeout(() => {
-            if (typeof rigo.inviteGame === 'function') {
-              rigo.inviteGame();
-            }
+        // 2. Validar que exista el NIE y coincida el grado[cite: 3]
+        if (!student || student.grade !== selectedGrade) {
+          if (rigo) rigo.setEmotion('confused');[cite: 1]
+          modalMessage.textContent = `Acceso denegado. El NIE [${nieValue}] no figura en el registro oficial de ${selectedGrade}.`;
+          modalOverlay.classList.add('active');
+          return;
+        }
+
+        // 3. Evaluar el calendario de actividades por la fecha actual del sistema
+        const today = new Date();
+        const activeActivities = ACTIVITIES_TIMELINE[selectedGrade] || [];
+        let targetUrl = null;
+
+        for (let period of activeActivities) {
+          const start = new Date(period.start + "T00:00:00");
+          const end = new Date(period.end + "T23:59:59");
+
+          if (today >= start && today <= end) {
+            targetUrl = period.url;
+            break;
+          }
+        }
+
+        // 4. Ejecución del flujo final
+        if (targetUrl) {
+          if (rigo && typeof rigo.loginSuccess === 'function') {
+            rigo.loginSuccess(student.name);[cite: 1]
             
-            // NOTA: Aquí puedes redirigir a tu página de actividades real:
-            // window.location.href = "actividades/index.html"; 
-          }, 4200);
+            enterBtn.disabled = true;
+            enterBtn.textContent = "ABRIENDO ACTIVIDAD...";
+            enterBtn.style.backgroundColor = "#5AC850";
+
+            setTimeout(() => {
+              // Redirige al recurso general adjuntando los parámetros de identidad del alumno
+              window.location.href = `${targetUrl}?nie=${nieValue}&student=${encodeURIComponent(student.name)}`;
+            }, 3500);
+          }
+        } else {
+          // Si el alumno existe pero no hay actividad programada para hoy
+          if (rigo && typeof rigo.comfort === 'function') {
+            rigo.setEmotion('sad');[cite: 1]
+            rigo.comfort();[cite: 1]
+          }
+          modalMessage.textContent = `¡Hola, ${student.name}! Tus datos son correctos, pero actualmente no hay ningún proceso de recuperación abierto para ${selectedGrade}.`;
+          modalOverlay.classList.add('active');
         }
       });
     });
