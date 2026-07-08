@@ -117,10 +117,6 @@
       transform: translate(-3px, -3px);
       box-shadow: 9px 9px 0px #FF6B9D;
     }
-    .brutal-btn:active {
-      transform: translate(6px, 6px);
-      box-shadow: 0px 0px 0px #1a1a1a;
-    }
 
     .badge-container {
       margin-top: 2.5rem;
@@ -140,7 +136,7 @@
     .badge-pink { background-color: #FF6B9D; color: white; }
     .badge-green { background-color: #A8E6CF; }
 
-    /* MODAL BRUTALISTA COEDUCA */
+    /* MODAL BRUTALISTA */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -184,15 +180,7 @@
       text-transform: uppercase; border: none; cursor: pointer;
       box-shadow: 4px 4px 0px #4ECDC4; width: 100%;
     }
-    .modal-close-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px #ffffff; }
-
-    @media (max-width: 480px) {
-      body { padding: 1rem; }
-      h1 { font-size: 2.3rem; }
-      .brutal-container { padding: 1.5rem; }
-    }
   </style>
-  <!-- Cargamos primero la base de datos externa y luego a Rigo -->
   <script src="students.js"></script>
   <script src="rigo.js"></script>
 </head>
@@ -205,9 +193,9 @@
     <div class="form-group">
       <label for="grade-select">1. Selecciona tu Grado:</label>
       <select id="grade-select">
-        <option value="Séptimo">Séptimo Grado</option>
+        <option value="Séptimo" selected>Séptimo Grado</option>
         <option value="Octavo">Octavo Grado</option>
-        <option value="Noveno" selected>Noveno Grado</option>
+        <option value="Noveno">Noveno Grado</option>
         <option value="Primer Año">Primer Año de Bachillerato</option>
         <option value="Segundo Año">Segundo Año de Bachillerato</option>
       </select>
@@ -215,7 +203,7 @@
 
     <div class="form-group">
       <label for="student-nie">2. Ingresa tu NIE:</label>
-      <input type="text" id="student-nie" placeholder="Ej. 20062471" autocomplete="off" maxlength="12">
+      <input type="text" id="student-nie" placeholder="Ej. 20138868" autocomplete="off" maxlength="12">
     </div>
 
     <button class="brutal-btn" id="enter-btn">¡INGRESAR AHORA!</button>
@@ -227,7 +215,6 @@
     </div>
   </div>
 
-  <!-- ALERTA DE RECTÁNGULO MODAL BRUTALISTA -->
   <div class="modal-overlay" id="modal-overlay">
     <div class="brutal-modal">
       <h2>ALERT!</h2>
@@ -236,31 +223,25 @@
     </div>
   </div>
 
-  <rigo-mascot id="rigo-companion" grade="Noveno"></rigo-mascot>
+  <rigo-mascot id="rigo-companion" grade="Séptimo"></rigo-mascot>
 
   <script>
-    // CRONOGRAMA GENERAL DE ACTIVIDADES POR GRADO (Configuras todo aquí)
-    // Cuando quieras lanzar una nueva actividad, solo cambias los rangos de fechas.
+    // CRONOGRAMA DE ACTIVIDADES 2026
     const ACTIVITIES_TIMELINE = {
       "Séptimo": [
-        { start: "2026-01-01", end: "2026-05-15", url: "activities/septimo/recuperacion1.html" },
-        { start: "2026-05-16", end: "2026-08-30", url: "activities/septimo/recuperacion2.html" } // Activo hoy
+        { start: "2026-05-16", end: "2026-08-30", url: "septimo/recuperacion2.html" }
       ],
       "Octavo": [
-        { start: "2026-05-16", end: "2026-08-30", url: "activities/octavo/recuperacion2.html" }
+        { start: "2026-05-16", end: "2026-08-30", url: "octavo/recuperacion2.html" }
       ],
       "Noveno": [
-        { start: "2026-01-01", end: "2026-05-15", url: "activities/noveno/recuperacion1.html" },
-        { start: "2026-05-16", end: "2026-08-30", url: "activities/noveno/recuperacion2.html" } // Activo hoy
+        { start: "2026-05-16", end: "2026-08-30", url: "noveno/recuperacion2.html" }
       ],
       "Primer Año": [
-        { start: "2026-05-16", end: "2026-08-30", url: "activities/primer_ano/recuperacion2.html" }
+        { start: "2026-05-16", end: "2026-08-30", url: "primer_ano/recuperacion2.html" }
       ],
       "Segundo Año": [
-        { start: "2026-05-16", end: "2026-08-30", url: "activities/segundo_ano/recuperacion2.html" }
-      ],
-      "Maestro": [
-        { start: "2026-01-01", end: "2026-12-31", url: "activities/dashboard_teacher.html" }
+        { start: "2026-05-16", end: "2026-08-30", url: "segundo_ano/recuperacion2.html" }
       ]
     };
 
@@ -274,53 +255,49 @@
       const modalMessage = document.getElementById('modal-message');
       const modalClose = document.getElementById('modal-close');
 
-      // Bienvenida de Rigo[cite: 1]
       setTimeout(() => {
-        if (rigo && typeof rigo.welcome === 'function') rigo.welcome();[cite: 1]
+        if (rigo && typeof rigo.welcome === 'function') rigo.welcome();
       }, 1500);
 
-      // Sincronizar el select de grados con el filtro de Rigo[cite: 1]
       gradeSelect.addEventListener('change', (e) => {
         const selectedGrade = e.target.value;
         if (rigo && typeof rigo.setGrade === 'function') {
-          rigo.setGrade(selectedGrade);[cite: 1]
-          rigo.setEmotion('thinking');[cite: 1]
-          rigo.say(`Configurado para: ${selectedGrade}`, 2500);[cite: 1]
+          rigo.setGrade(selectedGrade);
+          rigo.setEmotion('thinking');
+          rigo.say(`Configurado para: ${selectedGrade}`, 2500);
         }
       });
 
       modalClose.addEventListener('click', () => {
         modalOverlay.classList.remove('active');
-        if (rigo) rigo.setEmotion('neutral');[cite: 1]
+        if (rigo) rigo.setEmotion('neutral');
       });
 
-      // PROCESADOR DE ACCESO CENTRALIZADO
       enterBtn.addEventListener('click', () => {
         const nieValue = nieInput.value.trim();
         const selectedGrade = gradeSelect.value;
 
         if (nieValue === "") {
           if (rigo && typeof rigo.say === 'function') {
-            rigo.setEmotion('angry');[cite: 1]
-            rigo.say("¡Oye! Rigo dice que no puedes entrar sin poner tu NIE.", 4000);[cite: 1]
+            rigo.setEmotion('angry');
+            rigo.say("¡Oye! Rigo dice que no puedes entrar sin poner tu NIE.", 4000);
           }
           nieInput.focus();
           return;
         }
 
-        // 1. Acceder al objeto global cargado desde students.js
-        const db = window.STUDENTS || {};[cite: 3]
-        const student = db[nieValue];[cite: 3]
+        // Acceder al objeto global desde students.js
+        const db = window.STUDENTS || {};
+        const student = db[nieValue];
 
-        // 2. Validar que exista el NIE y coincida el grado[cite: 3]
         if (!student || student.grade !== selectedGrade) {
-          if (rigo) rigo.setEmotion('confused');[cite: 1]
+          if (rigo) rigo.setEmotion('confused');
           modalMessage.textContent = `Acceso denegado. El NIE [${nieValue}] no figura en el registro oficial de ${selectedGrade}.`;
           modalOverlay.classList.add('active');
           return;
         }
 
-        // 3. Evaluar el calendario de actividades por la fecha actual del sistema
+        // Simulación controlada por reloj del sistema (Hoy: Julio 2026)
         const today = new Date();
         const activeActivities = ACTIVITIES_TIMELINE[selectedGrade] || [];
         let targetUrl = null;
@@ -335,27 +312,21 @@
           }
         }
 
-        // 4. Ejecución del flujo final
         if (targetUrl) {
           if (rigo && typeof rigo.loginSuccess === 'function') {
-            rigo.loginSuccess(student.name);[cite: 1]
+            rigo.loginSuccess(student.name);
             
             enterBtn.disabled = true;
             enterBtn.textContent = "ABRIENDO ACTIVIDAD...";
             enterBtn.style.backgroundColor = "#5AC850";
 
             setTimeout(() => {
-              // Redirige al recurso general adjuntando los parámetros de identidad del alumno
               window.location.href = `${targetUrl}?nie=${nieValue}&student=${encodeURIComponent(student.name)}`;
             }, 3500);
           }
         } else {
-          // Si el alumno existe pero no hay actividad programada para hoy
-          if (rigo && typeof rigo.comfort === 'function') {
-            rigo.setEmotion('sad');[cite: 1]
-            rigo.comfort();[cite: 1]
-          }
-          modalMessage.textContent = `¡Hola, ${student.name}! Tus datos son correctos, pero actualmente no hay ningún proceso de recuperación abierto para ${selectedGrade}.`;
+          if (rigo) rigo.setEmotion('sad');
+          modalMessage.textContent = `¡Hola, ${student.name}! Tus datos son correctos, pero actualmente no hay ningún proceso abierto para ${selectedGrade}.`;
           modalOverlay.classList.add('active');
         }
       });
