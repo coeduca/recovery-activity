@@ -125,3 +125,6 @@ const STUDENTS = {
   // PRUEBAS
   "1999": { name: "José Eliseo Martínez", grade: "Maestro" },
 };
+
+// Exponer la base de datos de manera global
+window.STUDENTS = STUDENTS;
