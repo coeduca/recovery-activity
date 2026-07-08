@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥕</text></svg>">
+  <title>Quiz de Recuperación - 7° Grado</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #4ECDC4; /* Fondo Teal Brutalista */
+      color: #1a1a1a;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .quiz-container {
+      background-color: #ffffff;
+      border: 4px solid #1a1a1a;
+      box-shadow: 12px 12px 0px #1a1a1a;
+      padding: 2.5rem;
+      max-width: 600px;
+      width: 100%;
+      margin-bottom: 5rem;
+    }
+
+    .welcome-badge {
+      background-color: #FF6B9D;
+      color: white;
+      padding: 8px 15px;
+      border: 3px solid #1a1a1a;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    h1 {
+      font-family: 'Impact', sans-serif;
+      font-size: 2.5rem;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      line-height: 1;
+    }
+
+    .question-block {
+      border: 3px solid #1a1a1a;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      background-color: #FFE66D; /* Amarillo Rigo */
+      box-shadow: 5px 5px 0px #1a1a1a;
+    }
+
+    .question-block p {
+      font-size: 1.1rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin: 0.5rem 0;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    input[type="radio"] {
+      margin-right: 10px;
+      accent-color: #1a1a1a;
+    }
+
+    .brutal-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: white;
+      background-color: #1a1a1a;
+      border: 4px solid #1a1a1a;
+      cursor: pointer;
+      box-shadow: 5px 5px 0px #FF6B9D;
+      margin-top: 2rem;
+    }
+    .brutal-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0px #A8E6CF;
+    }
+
+    /* Resultado final */
+    #result-box {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border: 3px solid #1a1a1a;
+      display: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+  </style>
+  <script src="../../rigo.js"></script>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <div class="welcome-badge" id="student-tag">Cargando estudiante...</div>
+    
+    <h1>7th Grade - Basic Diagnostic Quiz</h1>
+    <hr style="border: 2px solid #1a1a1a; margin-bottom: 1.5rem;">
+
+    <form id="quiz-form">
+      <div class="question-block">
+        <p>1. Complete: "She ________ a very smart student."</p>
+        <label><input type="radio" name="q1" value="correct"> is</label>
+        <label><input type="radio" name="q1" value="wrong1"> am</label>
+        <label><input type="radio" name="q1" value="wrong2"> are</label>
+      </div>
+
+      <div class="question-block">
+        <p>2. What is the opposite of "BIG"?</p>
+        <label><input type="radio" name="q2" value="wrong1"> Tall</label>
+        <label><input type="radio" name="q2" value="correct"> Small</label>
+        <label><input type="radio" name="q2" value="wrong2"> Short</label>
+      </div>
+
+      <div class="question-block">
+        <p>3. Select the correct color for a banana:</p>
+        <label><input type="radio" name="q3" value="wrong1"> Blue</label>
+        <label><input type="radio" name="q3" value="wrong2"> Red</label>
+        <label><input type="radio" name="q3" value="correct"> Yellow</label>
+      </div>
+
+      <button type="button" class="brutal-btn" id="submit-btn">Terminar Examen</button>
+    </form>
+
+    <div id="result-box"></div>
+  </div>
+
+  <rigo-mascot id="rigo-companion" grade="Séptimo"></rigo-mascot>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const rigo = document.getElementById('rigo-companion');
+      const studentTag = document.getElementById('student-tag');
+      
+      // Leer datos desde la URL creados por el index
+      const urlParams = new URLSearchParams(window.location.search);
+      const studentName = urlParams.get('student') || "Estudiante de 7°";
+      const nie = urlParams.get('nie') || "";
+
+      studentTag.textContent = `👤 Alumno: ${studentName} (NIE: ${nie})`;
+
+      // Saludo personalizado de Rigo al entrar al examen
+      setTimeout(() => {
+        if (rigo) {
+          rigo.setEmotion('happy');
+          rigo.say(`¡Tú puedes, ${studentName.split(' ')[1] || "Julián"}! Lee con cuidado.`, 4000);
+        }
+      }, 1000);
+
+      // Calificar actividad e interactuar con Rigo
+      document.getElementById('submit-btn').addEventListener('click', () => {
+        const form = document.getElementById('quiz-form');
+        const q1 = form.q1.value;
+        const q2 = form.q2.value;
+        const q3 = form.q3.value;
+
+        if (!q1 || !q2 || !q3) {
+          if (rigo) {
+            rigo.setEmotion('confused');
+            rigo.say("¡Hey! Responde todas las preguntas antes de terminar.", 3500);
+          }
+          return;
+        }
+
+        let score = 0;
+        if (q1 === 'correct') score++;
+        if (q2 === 'correct') score++;
+        if (q3 === 'correct') score++;
+
+        const resultBox = document.getElementById('result-box');
+        resultBox.style.display = "block";
+
+        if (score === 3) {
+          resultBox.style.backgroundColor = "#A8E6CF";
+          resultBox.textContent = "¡Nota: 10/10! Excelente trabajo.";
+          if (rigo) rigo.cheer(); // Animación feliz/emocionada de Rigo
+        } else if (score >= 1) {
+          resultBox.style.backgroundColor = "#FFE66D";
+          resultBox.textContent = `Nota: ${((score/3)*10).toFixed(1)}/10. Puedes hacerlo mejor.`;
+          if (rigo) {
+            rigo.setEmotion('neutral');
+            rigo.say("Pasaste, pero hay que repasar más.", 3000);
+          }
+        } else {
+          resultBox.style.backgroundColor = "#FF6B9D";
+          resultBox.textContent = "Nota: 0/10. Inténtalo de nuevo.";
+          if (rigo) rigo.comfort(); // Animación triste/consuelo de Rigo
+        }
+      });
+    });
+  </script>
+</body>
+</html>
