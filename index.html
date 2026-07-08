@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="favicon.png" type="image/png">
+  <!-- Favicon SVG en línea para asegurar que funcione sin depender de un archivo externo -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
   <title>Actividades de Recuperación | English Ecosystem</title>
   <style>
     /* RESET BRUTALISTA */
@@ -15,7 +16,7 @@
 
     body {
       font-family: 'Courier New', Courier, monospace;
-      background-color: #FFE66D; /* Amarillo idéntico al fondo de Rigo */
+      background-color: #FFE66D; /* Amarillo Rigo */
       color: #1a1a1a;
       padding: 2rem;
       min-height: 100vh;
@@ -168,6 +169,7 @@
       .brutal-container { padding: 1.5rem; }
     }
   </style>
+  <!-- Inclusión de tu script existente -->
   <script src="rigo.js"></script>
 </head>
 <body>
@@ -176,6 +178,7 @@
     <h1>RECOVERY!</h1>
     <p>Bienvenido al portal de Actividades de Recuperación. ¡Rigo ya está listo en su esquina para darte los mejores hints!</p>
     
+    <!-- Selector de Grado para interactuar con rigo.setGrade() -->
     <div class="form-group">
       <label for="grade-select">1. Selecciona tu Grado:</label>
       <select id="grade-select">
@@ -187,20 +190,24 @@
       </select>
     </div>
 
+    <!-- Entrada de NIE requerido por el método rigo.welcome() -->
     <div class="form-group">
       <label for="student-nie">2. Ingresa tu NIE:</label>
       <input type="text" id="student-nie" placeholder="Ej. 1048293" autocomplete="off" maxlength="12">
     </div>
 
+    <!-- Botón de Acción -->
     <button class="brutal-btn" id="enter-btn">¡INGRESAR AHORA!</button>
 
+    <!-- Badges decorativos estilo Brutalistas (Actualizados) -->
     <div class="badge-container">
-      <span class="badge badge-teal">English Ecosystem</span>
-      <span class="badge badge-pink">Mascot V2</span>
-      <span class="badge badge-green">GitHub Pages</span>
+      <span class="badge badge-teal">Teacher Eliseo</span>
+      <span class="badge badge-pink">English Class</span>
+      <span class="badge badge-green">Coeduca 2026</span>
     </div>
   </div>
 
+  <!-- Declaración de Rigo en el DOM -->
   <rigo-mascot id="rigo-companion" grade="Noveno"></rigo-mascot>
 
   <script>
@@ -210,7 +217,7 @@
       const nieInput = document.getElementById('student-nie');
       const enterBtn = document.getElementById('enter-btn');
 
-      // 1. Ejecutar el saludo inicial oficial de Rigo ("Escribe tu NIE") tras un leve delay de renderizado
+      // 1. Ejecutar el saludo inicial oficial de Rigo tras un leve delay de renderizado
       setTimeout(() => {
         if (rigo && typeof rigo.welcome === 'function') {
           rigo.welcome();
