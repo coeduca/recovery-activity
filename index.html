@@ -3,8 +3,2248 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>🥕<text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
+  <title>Quiz de Recuperación - 7° Grado | Part 1</title>
+  <style>
+    /* RESET BRUTALISTA & RESPONSIVO */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #4ECDC4; /* Fondo Teal Brutalista */
+      color: #1a1a1a;
+      padding: 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .quiz-container {
+      background-color: #ffffff;
+      border: 4px solid #1a1a1a;
+      box-shadow: 8px 8px 0px #1a1a1a;
+      padding: 1.5rem;
+      max-width: 800px;
+      width: 100%;
+      margin-bottom: 5rem;
+      transform: rotate(-0.2deg);
+    }
+
+    .welcome-badge {
+      background-color: #FF6B9D;
+      color: white;
+      padding: 8px 15px;
+      border: 3px solid #1a1a1a;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    h1 {
+      font-family: 'Impact', sans-serif;
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    .part-title {
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.2rem;
+      background-color: #FFE66D;
+      display: inline-block;
+      padding: 4px 8px;
+      border: 2px solid #1a1a1a;
+      margin-bottom: 1.5rem;
+    }
+
+    /* BANCO DE IMÁGENES (MÓVIL Y PC) */
+    .bank-section {
+      border: 3px solid #1a1a1a;
+      padding: 1rem;
+      background-color: #A8E6CF;
+      box-shadow: 5px 5px 0px #1a1a1a;
+      margin-bottom: 2rem;
+    }
+
+    .bank-instruction {
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .image-bank {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* TARJETAS DE MIEMBROS */
+    .member-card {
+      background-color: white;
+      border: 3px solid #1a1a1a;
+      padding: 6px;
+      width: 85px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #1a1a1a;
+      transition: all 0.15s ease;
+    }
+
+    .member-card img {
+      width: 100%;
+      height: 65px;
+      object-fit: contain;
+      border-bottom: 2px solid #1a1a1a;
+      margin-bottom: 4px;
+      background-color: #fafafa;
+    }
+
+    .member-card span {
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: block;
+      word-break: break-word;
+    }
+
+    .member-card.selected {
+      background-color: #FF6B9D;
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 5px 5px 0px #1a1a1a;
+    }
+
+    /* ESTRUCTURA DEL ÁRBOL GENEALÓGICO */
+    .tree-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      background-color: #fff;
+      border: 3px solid #1a1a1a;
+      padding: 1.5rem 1rem;
+      box-shadow: 6px 6px 0px #1a1a1a;
+      position: relative;
+    }
+
+    .tree-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    /* ESPACIOS VACÍOS DEL ÁRBOL */
+    .drop-zone {
+      border: 3px dashed #1a1a1a;
+      background-color: #f9f9f9;
+      width: 95px;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      position: relative;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .drop-zone:hover {
+      background-color: #FFE66D;
+    }
+
+    .drop-zone-label {
+      font-size: 0.75rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-align: center;
+      color: #777;
+      pointer-events: none;
+    }
+
+    /* BOTÓN VERIFICAR */
+    .brutal-btn {
+      display: block;
+      width: 100%;
+      padding: 1.2rem;
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: white;
+      background-color: #1a1a1a;
+      border: 4px solid #1a1a1a;
+      cursor: pointer;
+      box-shadow: 5px 5px 0px #FF6B9D;
+      margin-top: 2rem;
+    }
+
+    .brutal-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0px #A8E6CF;
+    }
+
+    #result-box {
+      margin-top: 1.5rem;
+      padding: 1.2rem;
+      border: 3px solid #1a1a1a;
+      display: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: center;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    /* ADAPTACIÓN MÓVIL SÓLIDA */
+    @media (min-width: 768px) {
+      body { padding: 2rem; }
+      .quiz-container { padding: 2.5rem; box-shadow: 12px 12px 0px #1a1a1a; }
+      h1 { font-size: 3rem; }
+      .member-card { width: 110px; }
+      .member-card img { height: 80px; }
+      .member-card span { font-size: 0.85rem; }
+      .drop-zone { width: 120px; min-height: 130px; }
+      .drop-zone-label { font-size: 0.85rem; }
+      .tree-container { gap: 2.5rem; padding: 2.5rem; }
+    }
+  </style>
+  <script src="../../rigo.js"></script>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <div class="welcome-badge" id="student-tag">Cargando estudiante...</div>
+    
+    <h1>7th Grade - Family & Relationships</h1>
+    <div class="part-title">PART 1: My Family Tree</div>
+
+    <!-- BANCO DE IMÁGENES -->
+    <div class="bank-section">
+      <div class="bank-instruction">1. Selecciona un miembro y luego toca el espacio correcto en el árbol:</div>
+      <div class="image-bank" id="image-bank">
+        <!-- Las imágenes corresponden exactamente a los nombres de archivo de image_c3391d.png -->
+        <div class="member-card" data-member="Grandfather">
+          <img src="img Grandfather.png" alt="Grandfather">
+          <span>Grandfather</span>
+        </div>
+        <div class="member-card" data-member="Grandmother">
+          <img src="img Grandmother.png" alt="Grandmother">
+          <span>Grandmother</span>
+        </div>
+        <div class="member-card" data-member="Father">
+          <img src="img Father.png" alt="Father">
+          <span>Father</span>
+        </div>
+        <div class="member-card" data-member="Mother">
+          <img src="img Mother.png" alt="Mother">
+          <span>Mother</span>
+        </div>
+        <div class="member-card" data-member="Uncle">
+          <img src="img Uncle.png" alt="Uncle">
+          <span>Uncle</span>
+        </div>
+        <div class="member-card" data-member="Brother">
+          <img src="img Brother.png" alt="Brother">
+          <span>Brother</span>
+        </div>
+        <div class="member-card" data-member="Me">
+          <img src="img Me.png" alt="Me">
+          <span>Me (Yo)</span>
+        </div>
+        <div class="member-card" data-member="Sister">
+          <img src="img Sister.png" alt="Sister">
+          <span>Sister</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁRBOL GENEALÓGICO -->
+    <div class="tree-container">
+      
+      <!-- Nivel 1: Abuelos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Grandfather">
+          <div class="drop-zone-label">Grandfather</div>
+        </div>
+        <div class="drop-zone" data-expected="Grandmother">
+          <div class="drop-zone-label">Grandmother</div>
+        </div>
+      </div>
+
+      <!-- Nivel 2: Padres y Tíos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Father">
+          <div class="drop-zone-label">Father</div>
+        </div>
+        <div class="drop-zone" data-expected="Mother">
+          <div class="drop-zone-label">Mother</div>
+        </div>
+        <div class="drop-zone" data-expected="Uncle">
+          <div class="drop-zone-label">Uncle</div>
+        </div>
+      </div>
+
+      <!-- Nivel 3: Hijos / Hermanos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Brother">
+          <div class="drop-zone-label">Brother</div>
+        </div>
+        <div class="drop-zone" data-expected="Me">
+          <div class="drop-zone-label">Me</div>
+        </div>
+        <div class="drop-zone" data-expected="Sister">
+          <div class="drop-zone-label">Sister</div>
+        </div>
+      </div>
+
+    </div>
+
+    <button type="button" class="brutal-btn" id="submit-part1">Verificar Árbol Genealógico</button>
+    <div id="result-box"></div>
+  </div>
+
+  <rigo-mascot id="rigo-companion" grade="Séptimo"></rigo-mascot>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const rigo = document.getElementById('rigo-companion');
+      const studentTag = document.getElementById('student-tag');
+      const imageBank = document.getElementById('image-bank');
+      const dropZones = document.querySelectorAll('.drop-zone');
+      const submitBtn = document.getElementById('submit-part1');
+      const resultBox = document.getElementById('result-box');
+
+      // Leer parámetros del estudiante desde la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const studentName = urlParams.get('student') || "Estudiante de 7°";
+      const nie = urlParams.get('nie') || "";
+      studentTag.textContent = ` Alumno: ${studentName} (NIE: ${nie})`;
+
+      // FRASES ADAPTADAS PARA RIGO (Tema: Familia)
+      setTimeout(() => {
+        if (rigo) {
+          rigo.setEmotion('happy');
+          rigo.say(`¡Welcome, ${studentName.split(' ')[0]}! Ayúdame a ordenar mi árbol familiar. ¡Los abuelos van arriba!`, 5000);
+        }
+      }, 1000);
+
+      // Sistema de interacción Clic/Tap adaptado a móviles
+      let selectedCard = null;
+
+      const cards = document.querySelectorAll('.member-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          // Deseleccionar previa
+          if (selectedCard) {
+            selectedCard.classList.remove('selected');
+          }
+          
+          // Si hace clic en la misma, la deselecciona
+          if (selectedCard === card) {
+            selectedCard = null;
+            return;
+          }
+
+          selectedCard = card;
+          card.classList.add('selected');
+
+          if (rigo && Math.random() > 0.5) {
+            rigo.setEmotion('thinking');
+            rigo.say(`¿Dónde colocarás a ${card.dataset.member}? Piensa bien.`, 2500);
+          }
+        });
+      });
+
+      dropZones.forEach(zone => {
+        zone.addEventListener('click', () => {
+          // Si la zona ya tiene un miembro asignado, lo regresa al banco
+          const existingCardId = zone.dataset.currentMember;
+          if (existingCardId) {
+            const originalCard = imageBank.querySelector(`[data-member="${existingCardId}"]`);
+            if (originalCard) originalCard.style.display = 'block';
+            
+            zone.innerHTML = `<div class="drop-zone-label">${zone.dataset.expected}</div>`;
+            delete zone.dataset.currentMember;
+            zone.style.borderStyle = 'dashed';
+            zone.style.backgroundColor = '#f9f9f9';
+            return;
+          }
+
+          // Si hay una tarjeta seleccionada, la coloca aquí
+          if (selectedCard) {
+            const memberType = selectedCard.dataset.member;
+            
+            // Mover visualmente clonando el contenido de la tarjeta dentro de la zona
+            zone.innerHTML = selectedCard.innerHTML;
+            zone.dataset.currentMember = memberType;
+            zone.style.borderStyle = 'solid';
+            zone.style.backgroundColor = '#ffffff';
+
+            // Ocultar del banco
+            selectedCard.style.display = 'none';
+            selectedCard.classList.remove('selected');
+            selectedCard = null;
+
+            if (rigo) {
+              rigo.setEmotion('sneaky');
+              rigo.say("¡Eso es! Sigamos completando las generaciones.", 2000);
+            }
+          }
+        });
+      });
+
+      // Calificación de la Parte 1
+      submitBtn.addEventListener('click', () => {
+        let totalZones = dropZones.length;
+        let correctAnswers = 0;
+        let incomplete = false;
+
+        dropZones.forEach(zone => {
+          const current = zone.dataset.currentMember;
+          const expected = zone.dataset.expected;
+
+          if (!current) {
+            incomplete = true;
+          } else if (current === expected) {
+            correctAnswers++;
+          }
+        });
+
+        if (incomplete) {
+          if (rigo) {
+            rigo.setEmotion('confused');
+            rigo.say("¡Hey! No dejes espacios vacíos en el árbol familiar.", 3500);
+          }
+          resultBox.style.display = "block";
+          resultBox.style.backgroundColor = "#FFE66D";
+          resultBox.textContent = "⚠️ Por favor, coloca a todos los miembros de la familia antes de revisar.";
+          return;
+        }
+
+        resultBox.style.display = "block";
+        if (correctAnswers === totalZones) {
+          resultBox.style.backgroundColor = "#A8E6CF";
+          resultBox.textContent = `¡Perfecto! Todo el árbol genealógico es correcto (${correctAnswers}/${totalZones}).`;
+          if (rigo) {
+            rigo.setEmotion('excited');
+            rigo.say("¡Excelente! Has identificado perfectamente a toda la familia. Quedó genial.", 4500);
+          }
+        } else {
+          resultBox.style.backgroundColor = "#FF6B9D";
+          resultBox.textContent = `Tienes algunos miembros fuera de lugar. Revisa las posiciones (${correctAnswers}/${totalZones} correctos).`;
+          if (rigo) {
+            rigo.setEmotion('sad');
+            rigo.say("Oh, algunos parientes están confundidos de posición. ¡Toca un espacio para regresarlos al banco!", 4500);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
-  <title>Actividades de Recuperación | English Ecosystem</title>
+  <title>Quiz de Recuperación - 7° Grado | Part 1</title>
+  <style>
+    /* RESET BRUTALISTA & RESPONSIVO */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #4ECDC4; /* Fondo Teal Brutalista */
+      color: #1a1a1a;
+      padding: 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .quiz-container {
+      background-color: #ffffff;
+      border: 4px solid #1a1a1a;
+      box-shadow: 8px 8px 0px #1a1a1a;
+      padding: 1.5rem;
+      max-width: 800px;
+      width: 100%;
+      margin-bottom: 5rem;
+      transform: rotate(-0.2deg);
+    }
+
+    .welcome-badge {
+      background-color: #FF6B9D;
+      color: white;
+      padding: 8px 15px;
+      border: 3px solid #1a1a1a;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    h1 {
+      font-family: 'Impact', sans-serif;
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
+  <title>Quiz de Recuperación - 7° Grado | Part 1</title>
+  <style>
+    /* RESET BRUTALISTA & RESPONSIVO */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #4ECDC4; /* Fondo Teal Brutalista */
+      color: #1a1a1a;
+      padding: 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .quiz-container {
+      background-color: #ffffff;
+      border: 4px solid #1a1a1a;
+      box-shadow: 8px 8px 0px #1a1a1a;
+      padding: 1.5rem;
+      max-width: 800px;
+      width: 100%;
+      margin-bottom: 5rem;
+      transform: rotate(-0.2deg);
+    }
+
+    .welcome-badge {
+      background-color: #FF6B9D;
+      color: white;
+      padding: 8px 15px;
+      border: 3px solid #1a1a1a;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    h1 {
+      font-family: 'Impact', sans-serif;
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    .part-title {
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.2rem;
+      background-color: #FFE66D;
+      display: inline-block;
+      padding: 4px 8px;
+      border: 2px solid #1a1a1a;
+      margin-bottom: 1.5rem;
+    }
+
+    /* BANCO DE IMÁGENES (MÓVIL Y PC) */
+    .bank-section {
+      border: 3px solid #1a1a1a;
+      padding: 1rem;
+      background-color: #A8E6CF;
+      box-shadow: 5px 5px 0px #1a1a1a;
+      margin-bottom: 2rem;
+    }
+
+    .bank-instruction {
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .image-bank {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* TARJETAS DE MIEMBROS */
+    .member-card {
+      background-color: white;
+      border: 3px solid #1a1a1a;
+      padding: 6px;
+      width: 85px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #1a1a1a;
+      transition: all 0.15s ease;
+    }
+
+    .member-card img {
+      width: 100%;
+      height: 65px;
+      object-fit: contain;
+      border-bottom: 2px solid #1a1a1a;
+      margin-bottom: 4px;
+      background-color: #fafafa;
+    }
+
+    .member-card span {
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: block;
+      word-break: break-word;
+    }
+
+    .member-card.selected {
+      background-color: #FF6B9D;
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 5px 5px 0px #1a1a1a;
+    }
+
+    /* ESTRUCTURA DEL ÁRBOL GENEALÓGICO */
+    .tree-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      background-color: #fff;
+      border: 3px solid #1a1a1a;
+      padding: 1.5rem 1rem;
+      box-shadow: 6px 6px 0px #1a1a1a;
+      position: relative;
+    }
+
+    .tree-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    /* ESPACIOS VACÍOS DEL ÁRBOL */
+    .drop-zone {
+      border: 3px dashed #1a1a1a;
+      background-color: #f9f9f9;
+      width: 95px;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      position: relative;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .drop-zone:hover {
+      background-color: #FFE66D;
+    }
+
+    .drop-zone-label {
+      font-size: 0.75rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-align: center;
+      color: #777;
+      pointer-events: none;
+    }
+
+    /* BOTÓN VERIFICAR */
+    .brutal-btn {
+      display: block;
+      width: 100%;
+      padding: 1.2rem;
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: white;
+      background-color: #1a1a1a;
+      border: 4px solid #1a1a1a;
+      cursor: pointer;
+      box-shadow: 5px 5px 0px #FF6B9D;
+      margin-top: 2rem;
+    }
+
+    .brutal-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0px #A8E6CF;
+    }
+
+    #result-box {
+      margin-top: 1.5rem;
+      padding: 1.2rem;
+      border: 3px solid #1a1a1a;
+      display: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: center;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    /* ADAPTACIÓN MÓVIL SÓLIDA */
+    @media (min-width: 768px) {
+      body { padding: 2rem; }
+      .quiz-container { padding: 2.5rem; box-shadow: 12px 12px 0px #1a1a1a; }
+      h1 { font-size: 3rem; }
+      .member-card { width: 110px; }
+      .member-card img { height: 80px; }
+      .member-card span { font-size: 0.85rem; }
+      .drop-zone { width: 120px; min-height: 130px; }
+      .drop-zone-label { font-size: 0.85rem; }
+      .tree-container { gap: 2.5rem; padding: 2.5rem; }
+    }
+  </style>
+  <script src="../../rigo.js"></script>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <div class="welcome-badge" id="student-tag">Cargando estudiante...</div>
+    
+    <h1>7th Grade - Family & Relationships</h1>
+    <div class="part-title">PART 1: My Family Tree</div>
+
+    <!-- BANCO DE IMÁGENES -->
+    <div class="bank-section">
+      <div class="bank-instruction">1. Selecciona un miembro y luego toca el espacio correcto en el árbol:</div>
+      <div class="image-bank" id="image-bank">
+        <!-- Las imágenes corresponden exactamente a los nombres de archivo de image_c3391d.png -->
+        <div class="member-card" data-member="Grandfather">
+          <img src="img Grandfather.png" alt="Grandfather">
+          <span>Grandfather</span>
+        </div>
+        <div class="member-card" data-member="Grandmother">
+          <img src="img Grandmother.png" alt="Grandmother">
+          <span>Grandmother</span>
+        </div>
+        <div class="member-card" data-member="Father">
+          <img src="img Father.png" alt="Father">
+          <span>Father</span>
+        </div>
+        <div class="member-card" data-member="Mother">
+          <img src="img Mother.png" alt="Mother">
+          <span>Mother</span>
+        </div>
+        <div class="member-card" data-member="Uncle">
+          <img src="img Uncle.png" alt="Uncle">
+          <span>Uncle</span>
+        </div>
+        <div class="member-card" data-member="Brother">
+          <img src="img Brother.png" alt="Brother">
+          <span>Brother</span>
+        </div>
+        <div class="member-card" data-member="Me">
+          <img src="img Me.png" alt="Me">
+          <span>Me (Yo)</span>
+        </div>
+        <div class="member-card" data-member="Sister">
+          <img src="img Sister.png" alt="Sister">
+          <span>Sister</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁRBOL GENEALÓGICO -->
+    <div class="tree-container">
+      
+      <!-- Nivel 1: Abuelos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Grandfather">
+          <div class="drop-zone-label">Grandfather</div>
+        </div>
+        <div class="drop-zone" data-expected="Grandmother">
+          <div class="drop-zone-label">Grandmother</div>
+        </div>
+      </div>
+
+      <!-- Nivel 2: Padres y Tíos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Father">
+          <div class="drop-zone-label">Father</div>
+        </div>
+        <div class="drop-zone" data-expected="Mother">
+          <div class="drop-zone-label">Mother</div>
+        </div>
+        <div class="drop-zone" data-expected="Uncle">
+          <div class="drop-zone-label">Uncle</div>
+        </div>
+      </div>
+
+      <!-- Nivel 3: Hijos / Hermanos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Brother">
+          <div class="drop-zone-label">Brother</div>
+        </div>
+        <div class="drop-zone" data-expected="Me">
+          <div class="drop-zone-label">Me</div>
+        </div>
+        <div class="drop-zone" data-expected="Sister">
+          <div class="drop-zone-label">Sister</div>
+        </div>
+      </div>
+
+    </div>
+
+    <button type="button" class="brutal-btn" id="submit-part1">Verificar Árbol Genealógico</button>
+    <div id="result-box"></div>
+  </div>
+
+  <rigo-mascot id="rigo-companion" grade="Séptimo"></rigo-mascot>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const rigo = document.getElementById('rigo-companion');
+      const studentTag = document.getElementById('student-tag');
+      const imageBank = document.getElementById('image-bank');
+      const dropZones = document.querySelectorAll('.drop-zone');
+      const submitBtn = document.getElementById('submit-part1');
+      const resultBox = document.getElementById('result-box');
+
+      // Leer parámetros del estudiante desde la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const studentName = urlParams.get('student') || "Estudiante de 7°";
+      const nie = urlParams.get('nie') || "";
+      studentTag.textContent = ` Alumno: ${studentName} (NIE: ${nie})`;
+
+      // FRASES ADAPTADAS PARA RIGO (Tema: Familia)
+      setTimeout(() => {
+        if (rigo) {
+          rigo.setEmotion('happy');
+          rigo.say(`¡Welcome, ${studentName.split(' ')[0]}! Ayúdame a ordenar mi árbol familiar. ¡Los abuelos van arriba!`, 5000);
+        }
+      }, 1000);
+
+      // Sistema de interacción Clic/Tap adaptado a móviles
+      let selectedCard = null;
+
+      const cards = document.querySelectorAll('.member-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          // Deseleccionar previa
+          if (selectedCard) {
+            selectedCard.classList.remove('selected');
+          }
+          
+          // Si hace clic en la misma, la deselecciona
+          if (selectedCard === card) {
+            selectedCard = null;
+            return;
+          }
+
+          selectedCard = card;
+          card.classList.add('selected');
+
+          if (rigo && Math.random() > 0.5) {
+            rigo.setEmotion('thinking');
+            rigo.say(`¿Dónde colocarás a ${card.dataset.member}? Piensa bien.`, 2500);
+          }
+        });
+      });
+
+      dropZones.forEach(zone => {
+        zone.addEventListener('click', () => {
+          // Si la zona ya tiene un miembro asignado, lo regresa al banco
+          const existingCardId = zone.dataset.currentMember;
+          if (existingCardId) {
+            const originalCard = imageBank.querySelector(`[data-member="${existingCardId}"]`);
+            if (originalCard) originalCard.style.display = 'block';
+            
+            zone.innerHTML = `<div class="drop-zone-label">${zone.dataset.expected}</div>`;
+            delete zone.dataset.currentMember;
+            zone.style.borderStyle = 'dashed';
+            zone.style.backgroundColor = '#f9f9f9';
+            return;
+          }
+
+          // Si hay una tarjeta seleccionada, la coloca aquí
+          if (selectedCard) {
+            const memberType = selectedCard.dataset.member;
+            
+            // Mover visualmente clonando el contenido de la tarjeta dentro de la zona
+            zone.innerHTML = selectedCard.innerHTML;
+            zone.dataset.currentMember = memberType;
+            zone.style.borderStyle = 'solid';
+            zone.style.backgroundColor = '#ffffff';
+
+            // Ocultar del banco
+            selectedCard.style.display = 'none';
+            selectedCard.classList.remove('selected');
+            selectedCard = null;
+
+            if (rigo) {
+              rigo.setEmotion('sneaky');
+              rigo.say("¡Eso es! Sigamos completando las generaciones.", 2000);
+            }
+          }
+        });
+      });
+
+      // Calificación de la Parte 1
+      submitBtn.addEventListener('click', () => {
+        let totalZones = dropZones.length;
+        let correctAnswers = 0;
+        let incomplete = false;
+
+        dropZones.forEach(zone => {
+          const current = zone.dataset.currentMember;
+          const expected = zone.dataset.expected;
+
+          if (!current) {
+            incomplete = true;
+          } else if (current === expected) {
+            correctAnswers++;
+          }
+        });
+
+        if (incomplete) {
+          if (rigo) {
+            rigo.setEmotion('confused');
+            rigo.say("¡Hey! No dejes espacios vacíos en el árbol familiar.", 3500);
+          }
+          resultBox.style.display = "block";
+          resultBox.style.backgroundColor = "#FFE66D";
+          resultBox.textContent = "⚠️ Por favor, coloca a todos los miembros de la familia antes de revisar.";
+          return;
+        }
+
+        resultBox.style.display = "block";
+        if (correctAnswers === totalZones) {
+          resultBox.style.backgroundColor = "#A8E6CF";
+          resultBox.textContent = `¡Perfecto! Todo el árbol genealógico es correcto (${correctAnswers}/${totalZones}).`;
+          if (rigo) {
+            rigo.setEmotion('excited');
+            rigo.say("¡Excelente! Has identificado perfectamente a toda la familia. Quedó genial.", 4500);
+          }
+        } else {
+          resultBox.style.backgroundColor = "#FF6B9D";
+          resultBox.textContent = `Tienes algunos miembros fuera de lugar. Revisa las posiciones (${correctAnswers}/${totalZones} correctos).`;
+          if (rigo) {
+            rigo.setEmotion('sad');
+            rigo.say("Oh, algunos parientes están confundidos de posición. ¡Toca un espacio para regresarlos al banco!", 4500);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>    }
+
+    .part-title {
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.2rem;
+      background-color: #FFE66D;
+      display: inline-block;
+      padding: 4px 8px;
+      border: 2px solid #1a1a1a;
+      margin-bottom: 1.5rem;
+    }
+
+    /* BANCO DE IMÁGENES (MÓVIL Y PC) */
+    .bank-section {
+      border: 3px solid #1a1a1a;
+      padding: 1rem;
+      background-color: #A8E6CF;
+      box-shadow: 5px 5px 0px #1a1a1a;
+      margin-bottom: 2rem;
+    }
+
+    .bank-instruction {
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .image-bank {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* TARJETAS DE MIEMBROS */
+    .member-card {
+      background-color: white;
+      border: 3px solid #1a1a1a;
+      padding: 6px;
+      width: 85px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #1a1a1a;
+      transition: all 0.15s ease;
+    }
+
+    .member-card img {
+      width: 100%;
+      height: 65px;
+      object-fit: contain;
+      border-bottom: 2px solid #1a1a1a;
+      margin-bottom: 4px;
+      background-color: #fafafa;
+    }
+
+    .member-card span {
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: block;
+      word-break: break-word;
+    }
+
+    .member-card.selected {
+      background-color: #FF6B9D;
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 5px 5px 0px #1a1a1a;
+    }
+
+    /* ESTRUCTURA DEL ÁRBOL GENEALÓGICO */
+    .tree-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      background-color: #fff;
+      border: 3px solid #1a1a1a;
+      padding: 1.5rem 1rem;
+      box-shadow: 6px 6px 0px #1a1a1a;
+      position: relative;
+    }
+
+    .tree-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    /* ESPACIOS VACÍOS DEL ÁRBOL */
+    .drop-zone {
+      border: 3px dashed #1a1a1a;
+      background-color: #f9f9f9;
+      width: 95px;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      position: relative;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .drop-zone:hover {
+      background-color: #FFE66D;
+    }
+
+    .drop-zone-label {
+      font-size: 0.75rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-align: center;
+      color: #777;
+      pointer-events: none;
+    }
+
+    /* BOTÓN VERIFICAR */
+    .brutal-btn {
+      display: block;
+      width: 100%;
+      padding: 1.2rem;
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: white;
+      background-color: #1a1a1a;
+      border: 4px solid #1a1a1a;
+      cursor: pointer;
+      box-shadow: 5px 5px 0px #FF6B9D;
+      margin-top: 2rem;
+    }
+
+    .brutal-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0px #A8E6CF;
+    }
+
+    #result-box {
+      margin-top: 1.5rem;
+      padding: 1.2rem;
+      border: 3px solid #1a1a1a;
+      display: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: center;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    /* ADAPTACIÓN MÓVIL SÓLIDA */
+    @media (min-width: 768px) {
+      body { padding: 2rem; }
+      .quiz-container { padding: 2.5rem; box-shadow: 12px 12px 0px #1a1a1a; }
+      h1 { font-size: 3rem; }
+      .member-card { width: 110px; }
+      .member-card img { height: 80px; }
+      .member-card span { font-size: 0.85rem; }
+      .drop-zone { width: 120px; min-height: 130px; }
+      .drop-zone-label { font-size: 0.85rem; }
+      .tree-container { gap: 2.5rem; padding: 2.5rem; }
+    }
+  </style>
+  <script src="../../rigo.js"></script>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <div class="welcome-badge" id="student-tag">Cargando estudiante...</div>
+    
+    <h1>7th Grade - Family & Relationships</h1>
+    <div class="part-title">PART 1: My Family Tree</div>
+
+    <!-- BANCO DE IMÁGENES -->
+    <div class="bank-section">
+      <div class="bank-instruction">1. Selecciona un miembro y luego toca el espacio correcto en el árbol:</div>
+      <div class="image-bank" id="image-bank">
+        <!-- Las imágenes corresponden exactamente a los nombres de archivo de image_c3391d.png -->
+        <div class="member-card" data-member="Grandfather">
+          <img src="img Grandfather.png" alt="Grandfather">
+          <span>Grandfather</span>
+        </div>
+        <div class="member-card" data-member="Grandmother">
+          <img src="img Grandmother.png" alt="Grandmother">
+          <span>Grandmother</span>
+        </div>
+        <div class="member-card" data-member="Father">
+          <img src="img Father.png" alt="Father">
+          <span>Father</span>
+        </div>
+        <div class="member-card" data-member="Mother">
+          <img src="img Mother.png" alt="Mother">
+          <span>Mother</span>
+        </div>
+        <div class="member-card" data-member="Uncle">
+          <img src="img Uncle.png" alt="Uncle">
+          <span>Uncle</span>
+        </div>
+        <div class="member-card" data-member="Brother">
+          <img src="img Brother.png" alt="Brother">
+          <span>Brother</span>
+        </div>
+        <div class="member-card" data-member="Me">
+          <img src="img Me.png" alt="Me">
+          <span>Me (Yo)</span>
+        </div>
+        <div class="member-card" data-member="Sister">
+          <img src="img Sister.png" alt="Sister">
+          <span>Sister</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁRBOL GENEALÓGICO -->
+    <div class="tree-container">
+      
+      <!-- Nivel 1: Abuelos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Grandfather">
+          <div class="drop-zone-label">Grandfather</div>
+        </div>
+        <div class="drop-zone" data-expected="Grandmother">
+          <div class="drop-zone-label">Grandmother</div>
+        </div>
+      </div>
+
+      <!-- Nivel 2: Padres y Tíos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Father">
+          <div class="drop-zone-label">Father</div>
+        </div>
+        <div class="drop-zone" data-expected="Mother">
+          <div class="drop-zone-label">Mother</div>
+        </div>
+        <div class="drop-zone" data-expected="Uncle">
+          <div class="drop-zone-label">Uncle</div>
+        </div>
+      </div>
+
+      <!-- Nivel 3: Hijos / Hermanos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Brother">
+          <div class="drop-zone-label">Brother</div>
+        </div>
+        <div class="drop-zone" data-expected="Me">
+          <div class="drop-zone-label">Me</div>
+        </div>
+        <div class="drop-zone" data-expected="Sister">
+          <div class="drop-zone-label">Sister</div>
+        </div>
+      </div>
+
+    </div>
+
+    <button type="button" class="brutal-btn" id="submit-part1">Verificar Árbol Genealógico</button>
+    <div id="result-box"></div>
+  </div>
+
+  <rigo-mascot id="rigo-companion" grade="Séptimo"></rigo-mascot>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const rigo = document.getElementById('rigo-companion');
+      const studentTag = document.getElementById('student-tag');
+      const imageBank = document.getElementById('image-bank');
+      const dropZones = document.querySelectorAll('.drop-zone');
+      const submitBtn = document.getElementById('submit-part1');
+      const resultBox = document.getElementById('result-box');
+
+      // Leer parámetros del estudiante desde la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const studentName = urlParams.get('student') || "Estudiante de 7°";
+      const nie = urlParams.get('nie') || "";
+      studentTag.textContent = ` Alumno: ${studentName} (NIE: ${nie})`;
+
+      // FRASES ADAPTADAS PARA RIGO (Tema: Familia)
+      setTimeout(() => {
+        if (rigo) {
+          rigo.setEmotion('happy');
+          rigo.say(`¡Welcome, ${studentName.split(' ')[0]}! Ayúdame a ordenar mi árbol familiar. ¡Los abuelos van arriba!`, 5000);
+        }
+      }, 1000);
+
+      // Sistema de interacción Clic/Tap adaptado a móviles
+      let selectedCard = null;
+
+      const cards = document.querySelectorAll('.member-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          // Deseleccionar previa
+          if (selectedCard) {
+            selectedCard.classList.remove('selected');
+          }
+          
+          // Si hace clic en la misma, la deselecciona
+          if (selectedCard === card) {
+            selectedCard = null;
+            return;
+          }
+
+          selectedCard = card;
+          card.classList.add('selected');
+
+          if (rigo && Math.random() > 0.5) {
+            rigo.setEmotion('thinking');
+            rigo.say(`¿Dónde colocarás a ${card.dataset.member}? Piensa bien.`, 2500);
+          }
+        });
+      });
+
+      dropZones.forEach(zone => {
+        zone.addEventListener('click', () => {
+          // Si la zona ya tiene un miembro asignado, lo regresa al banco
+          const existingCardId = zone.dataset.currentMember;
+          if (existingCardId) {
+            const originalCard = imageBank.querySelector(`[data-member="${existingCardId}"]`);
+            if (originalCard) originalCard.style.display = 'block';
+            
+            zone.innerHTML = `<div class="drop-zone-label">${zone.dataset.expected}</div>`;
+            delete zone.dataset.currentMember;
+            zone.style.borderStyle = 'dashed';
+            zone.style.backgroundColor = '#f9f9f9';
+            return;
+          }
+
+          // Si hay una tarjeta seleccionada, la coloca aquí
+          if (selectedCard) {
+            const memberType = selectedCard.dataset.member;
+            
+            // Mover visualmente clonando el contenido de la tarjeta dentro de la zona
+            zone.innerHTML = selectedCard.innerHTML;
+            zone.dataset.currentMember = memberType;
+            zone.style.borderStyle = 'solid';
+            zone.style.backgroundColor = '#ffffff';
+
+            // Ocultar del banco
+            selectedCard.style.display = 'none';
+            selectedCard.classList.remove('selected');
+            selectedCard = null;
+
+            if (rigo) {
+              rigo.setEmotion('sneaky');
+              rigo.say("¡Eso es! Sigamos completando las generaciones.", 2000);
+            }
+          }
+        });
+      });
+
+      // Calificación de la Parte 1
+      submitBtn.addEventListener('click', () => {
+        let totalZones = dropZones.length;
+        let correctAnswers = 0;
+        let incomplete = false;
+
+        dropZones.forEach(zone => {
+          const current = zone.dataset.currentMember;
+          const expected = zone.dataset.expected;
+
+          if (!current) {
+            incomplete = true;
+          } else if (current === expected) {
+            correctAnswers++;
+          }
+        });
+
+        if (incomplete) {
+          if (rigo) {
+            rigo.setEmotion('confused');
+            rigo.say("¡Hey! No dejes espacios vacíos en el árbol familiar.", 3500);
+          }
+          resultBox.style.display = "block";
+          resultBox.style.backgroundColor = "#FFE66D";
+          resultBox.textContent = "⚠️ Por favor, coloca a todos los miembros de la familia antes de revisar.";
+          return;
+        }
+
+        resultBox.style.display = "block";
+        if (correctAnswers === totalZones) {
+          resultBox.style.backgroundColor = "#A8E6CF";
+          resultBox.textContent = `¡Perfecto! Todo el árbol genealógico es correcto (${correctAnswers}/${totalZones}).`;
+          if (rigo) {
+            rigo.setEmotion('excited');
+            rigo.say("¡Excelente! Has identificado perfectamente a toda la familia. Quedó genial.", 4500);
+          }
+        } else {
+          resultBox.style.backgroundColor = "#FF6B9D";
+          resultBox.textContent = `Tienes algunos miembros fuera de lugar. Revisa las posiciones (${correctAnswers}/${totalZones} correctos).`;
+          if (rigo) {
+            rigo.setEmotion('sad');
+            rigo.say("Oh, algunos parientes están confundidos de posición. ¡Toca un espacio para regresarlos al banco!", 4500<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
+  <title>Quiz de Recuperación - 7° Grado | Part 1</title>
+  <style>
+    /* RESET BRUTALISTA & RESPONSIVO */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #4ECDC4; /* Fondo Teal Brutalista */
+      color: #1a1a1a;
+      padding: 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .quiz-container {
+      background-color: #ffffff;
+      border: 4px solid #1a1a1a;
+      box-shadow: 8px 8px 0px #1a1a1a;
+      padding: 1.5rem;
+      max-width: 800px;
+      width: 100%;
+      margin-bottom: 5rem;
+      transform: rotate(-0.2deg);
+    }
+
+    .welcome-badge {
+      background-color: #FF6B9D;
+      color: white;
+      padding: 8px 15px;
+      border: 3px solid #1a1a1a;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    h1 {
+      font-family: 'Impact', sans-serif;
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    .part-title {
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.2rem;
+      background-color: #FFE66D;
+      display: inline-block;
+      padding: 4px 8px;
+      border: 2px solid #1a1a1a;
+      margin-bottom: 1.5rem;
+    }
+
+    /* BANCO DE IMÁGENES (MÓVIL Y PC) */
+    .bank-section {
+      border: 3px solid #1a1a1a;
+      padding: 1rem;
+      background-color: #A8E6CF;
+      box-shadow: 5px 5px 0px #1a1a1a;
+      margin-bottom: 2rem;
+    }
+
+    .bank-instruction {
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .image-bank {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* TARJETAS DE MIEMBROS */
+    .member-card {
+      background-color: white;
+      border: 3px solid #1a1a1a;
+      padding: 6px;
+      width: 85px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #1a1a1a;
+      transition: all 0.15s ease;
+    }
+
+    .member-card img {
+      width: 100%;
+      height: 65px;
+      object-fit: contain;
+      border-bottom: 2px solid #1a1a1a;
+      margin-bottom: 4px;
+      background-color: #fafafa;
+    }
+
+    .member-card span {
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: block;
+      word-break: break-word;
+    }
+
+    .member-card.selected {
+      background-color: #FF6B9D;
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 5px 5px 0px #1a1a1a;
+    }
+
+    /* ESTRUCTURA DEL ÁRBOL GENEALÓGICO */
+    .tree-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      background-color: #fff;
+      border: 3px solid #1a1a1a;
+      padding: 1.5rem 1rem;
+      box-shadow: 6px 6px 0px #1a1a1a;
+      position: relative;
+    }
+
+    .tree-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    /* ESPACIOS VACÍOS DEL ÁRBOL */
+    .drop-zone {
+      border: 3px dashed #1a1a1a;
+      background-color: #f9f9f9;
+      width: 95px;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      position: relative;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .drop-zone:hover {
+      background-color: #FFE66D;
+    }
+
+    .drop-zone-label {
+      font-size: 0.75rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-align: center;
+      color: #777;
+      pointer-events: none;
+    }
+
+    /* BOTÓN VERIFICAR */
+    .brutal-btn {
+      display: block;
+      width: 100%;
+      padding: 1.2rem;
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: white;
+      background-color: #1a1a1a;
+      border: 4px solid #1a1a1a;
+      cursor: pointer;
+      box-shadow: 5px 5px 0px #FF6B9D;
+      margin-top: 2rem;
+    }
+
+    .brutal-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0px #A8E6CF;
+    }
+
+    #result-box {
+      margin-top: 1.5rem;
+      padding: 1.2rem;
+      border: 3px solid #1a1a1a;
+      display: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: center;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    /* ADAPTACIÓN MÓVIL SÓLIDA */
+    @media (min-width: 768px) {
+      body { padding: 2rem; }
+      .quiz-container { padding: 2.5rem; box-shadow: 12px 12px 0px #1a1a1a; }
+      h1 { font-size: 3rem; }
+      .member-card { width: 110px; }
+      .member-card img { height: 80px; }
+      .member-card span { font-size: 0.85rem; }
+      .drop-zone { width: 120px; min-height: 130px; }
+      .drop-zone-label { font-size: 0.85rem; }
+      .tree-container { gap: 2.5rem; padding: 2.5rem; }
+    }
+  </style>
+  <script src="../../rigo.js"></script>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <div class="welcome-badge" id="student-tag">Cargando estudiante...</div>
+    
+    <h1>7th Grade - Family & Relationships</h1>
+    <div class="part-title">PART 1: My Family Tree</div>
+
+    <!-- BANCO DE IMÁGENES -->
+    <div class="bank-section">
+      <div class="bank-instruction">1. Selecciona un miembro y luego toca el espacio correcto en el árbol:</div>
+      <div class="image-bank" id="image-bank">
+        <!-- Las imágenes corresponden exactamente a los nombres de archivo de image_c3391d.png -->
+        <div class="member-card" data-member="Grandfather">
+          <img src="img Grandfather.png" alt="Grandfather">
+          <span>Grandfather</span>
+        </div>
+        <div class="member-card" data-member="Grandmother">
+          <img src="img Grandmother.png" alt="Grandmother">
+          <span>Grandmother</span>
+        </div>
+        <div class="member-card" data-member="Father">
+          <img src="img Father.png" alt="Father">
+          <span>Father</span>
+        </div>
+        <div class="member-card" data-member="Mother">
+          <img src="img Mother.png" alt="Mother">
+          <span>Mother</span>
+        </div>
+        <div class="member-card" data-member="Uncle">
+          <img src="img Uncle.png" alt="Uncle">
+          <span>Uncle</span>
+        </div>
+        <div class="member-card" data-member="Brother">
+          <img src="img Brother.png" alt="Brother">
+          <span>Brother</span>
+        </div>
+        <div class="member-card" data-member="Me">
+          <img src="img Me.png" alt="Me">
+          <span>Me (Yo)</span>
+        </div>
+        <div class="member-card" data-member="Sister">
+          <img src="img Sister.png" alt="Sister">
+          <span>Sister</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁRBOL GENEALÓGICO -->
+    <div class="tree-container">
+      
+      <!-- Nivel 1: Abuelos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Grandfather">
+          <div class="drop-zone-label">Grandfather</div>
+        </div>
+        <div class="drop-zone" data-expected="Grandmother">
+          <div class="drop-zone-label">Grandmother</div>
+        </div>
+      </div>
+
+      <!-- Nivel 2: Padres y Tíos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Father">
+          <div class="drop-zone-label">Father</div>
+        </div>
+        <div class="drop-zone" data-expected="Mother">
+          <div class="drop-zone-label">Mother</div>
+        </div>
+        <div class="drop-zone" data-expected="Uncle">
+          <div class="drop-zone-label">Uncle</div>
+        </div>
+      </div>
+
+      <!-- Nivel 3: Hijos / Hermanos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Brother">
+          <div class="drop-zone-label">Brother</div>
+        </div>
+        <div class="drop-zone" data-expected="Me">
+          <div class="drop-zone-label">Me</div>
+        </div>
+        <div class="drop-zone" data-expected="Sister">
+          <div class="drop-zone-label">Sister</div>
+        </div>
+      </div>
+
+    </div>
+
+    <button type="button" class="brutal-btn" id="submit-part1">Verificar Árbol Genealógico</button>
+    <div id="result-box"></div>
+  </div>
+
+  <rigo-mascot id="rigo-companion" grade="Séptimo"></rigo-mascot>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const rigo = document.getElementById('rigo-companion');
+      const studentTag = document.getElementById('student-tag');
+      const imageBank = document.getElementById('image-bank');
+      const dropZones = document.querySelectorAll('.drop-zone');
+      const submitBtn = document.getElementById('submit-part1');
+      const resultBox = document.getElementById('result-box');
+
+      // Leer parámetros del estudiante desde la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const studentName = urlParams.get('student') || "Estudiante de 7°";
+      const nie = urlParams.get('nie') || "";
+      studentTag.textContent = ` Alumno: ${studentName} (NIE: ${nie})`;
+
+      // FRASES ADAPTADAS PARA RIGO (Tema: Familia)
+      setTimeout(() => {
+        if (rigo) {
+          rigo.setEmotion('happy');
+          rigo.say(`¡Welcome, ${studentName.split(' ')[0]}! Ayúdame a ordenar mi árbol familiar. ¡Los abuelos van arriba!`, 5000);
+        }
+      }, 1000);
+
+      // Sistema de interacción Clic/Tap adaptado a móviles
+      let selectedCard = null;
+
+      const cards = document.querySelectorAll('.member-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          // Deseleccionar previa
+          if (selectedCard) {
+            selectedCard.classList.remove('selected');
+          }
+          
+          // Si hace clic en la misma, la deselecciona
+          if (selectedCard === card) {
+            selectedCard = null;
+            return;
+          }
+
+          selectedCard = card;
+          card.classList.add('selected');
+
+          if (rigo && Math.random() > 0.5) {
+            rigo.setEmotion('thinking');
+            rigo.say(`¿Dónde colocarás a ${card.dataset.member}? Piensa bien.`, 2500);
+          }
+        });
+      });
+
+      dropZones.forEach(zone => {
+        zone.addEventListener('click', () => {
+          // Si la zona ya tiene un miembro asignado, lo regresa al banco
+          const existingCardId = zone.dataset.currentMember;
+          if (existingCardId) {
+            const originalCard = imageBank.querySelector(`[data-member="${existingCardId}"]`);
+            if (originalCard) originalCard.style.display = 'block';
+            
+            zone.innerHTML = `<div class="drop-zone-label">${zone.dataset.expected}</div>`;
+            delete zone.dataset.currentMember;
+            zone.style.borderStyle = 'dashed';
+            zone.style.backgroundColor = '#f9f9f9';
+            return;
+          }
+
+          // Si hay una tarjeta seleccionada, la coloca aquí
+          if (selectedCard) {
+            const memberType = selectedCard.dataset.member;
+            
+            // Mover visualmente clonando el contenido de la tarjeta dentro de la zona
+            zone.innerHTML = selectedCard.innerHTML;
+            zone.dataset.currentMember = memberType;
+            zone.style.borderStyle = 'solid';
+            zone.style.backgroundColor = '#ffffff';
+
+            // Ocultar del banco
+            selectedCard.style.display = 'none';
+            selectedCard.classList.remove('selected');
+            selectedCard = null;
+
+            if (rigo) {
+              rigo.setEmotion('sneaky');
+              rigo.say("¡Eso es! Sigamos completando las generaciones.", 2000);
+            }
+          }
+        });
+      });
+
+      // Calificación de la Parte 1
+      submitBtn.addEventListener('click', () => {
+        let totalZones = dropZones.length;
+        let correctAnswers = 0;
+        let incomplete = false;
+
+        dropZones.forEach(zone => {
+          const current = zone.dataset.currentMember;
+          const expected = zone.dataset.expected;
+
+          if (!current) {
+            incomplete = true;
+          } else if (current === expected) {
+            correctAnswers++;
+          }
+        });
+
+        if (incomplete) {
+          if (rigo) {
+            rigo.setEmotion('confused');
+            rigo.say("¡Hey! No dejes espacios vacíos en el árbol familiar.", 3500);
+          }
+          resultBox.style.display = "block";
+          resultBox.style.backgroundColor = "#FFE66D";
+          resultBox.textContent = "⚠️ Por favor, coloca a todos los miembros de la familia antes de revisar.";
+          return;
+        }
+
+        resultBox.style.display = "block";
+        if (correctAnswers === totalZones) {
+          resultBox.style.backgroundColor = "#A8E6CF";
+          resultBox.textContent = `¡Perfecto! Todo el árbol genealógico es correcto (${correctAnswers}/${totalZones}).`;
+          if (rigo) {
+            rigo.setEmotion('excited');
+            rigo.say("¡Excelente! Has identificado perfectamente a toda la familia. Quedó genial.", 4500);
+          }
+        } else {
+          resultBox.style.backgroundColor = "#FF6B9D";
+          resultBox.textContent = `Tienes algunos miembros fuera de lugar. Revisa las posiciones (${correctAnswers}/${totalZones} correctos).`;
+          if (rigo) {
+            rigo.setEmotion('sad');
+            rigo.say("Oh, algunos parientes están confundidos de posición. ¡Toca un espacio para regresarlos al banco!", 4500);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22></text></svg>">
+  <title>Actividades de Recuperación | English Ecosystem</title><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
+  <title>Quiz de Recuperación - 7° Grado | Part 1</title>
+  <style>
+    /* RESET BRUTALISTA & RESPONSIVO */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #4ECDC4; /* Fondo Teal Brutalista */
+      color: #1a1a1a;
+      padding: 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .quiz-container {
+      background-color: #ffffff;
+      border: 4px solid #1a1a1a;
+      box-shadow: 8px 8px 0px #1a1a1a;
+      padding: 1.5rem;
+      max-width: 800px;
+      width: 100%;
+      margin-bottom: 5rem;
+      transform: rotate(-0.2deg);
+    }
+
+    .welcome-badge {
+      background-color: #FF6B9D;
+      color: white;
+      padding: 8px 15px;
+      border: 3px solid #1a1a1a;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    h1 {
+      font-family: 'Impact', sans-serif;
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    .part-title {
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.2rem;
+      background-color: #FFE66D;
+      display: inline-block;
+      padding: 4px 8px;
+      border: 2px solid #1a1a1a;
+      margin-bottom: 1.5rem;
+    }
+
+    /* BANCO DE IMÁGENES (MÓVIL Y PC) */
+    .bank-section {
+      border: 3px solid #1a1a1a;
+      padding: 1rem;
+      background-color: #A8E6CF;
+      box-shadow: 5px 5px 0px #1a1a1a;
+      margin-bottom: 2rem;
+    }
+
+    .bank-instruction {
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .image-bank {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* TARJETAS DE MIEMBROS */
+    .member-card {
+      background-color: white;
+      border: 3px solid #1a1a1a;
+      padding: 6px;
+      width: 85px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #1a1a1a;
+      transition: all 0.15s ease;
+    }
+
+    .member-card img {
+      width: 100%;
+      height: 65px;
+      object-fit: contain;
+      border-bottom: 2px solid #1a1a1a;
+      margin-bottom: 4px;
+      background-color: #fafafa;
+    }
+
+    .member-card span {
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: block;
+      word-break: break-word;
+    }
+
+    .member-card.selected {
+      background-color: #FF6B9D;
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 5px 5px 0px #1a1a1a;
+    }
+
+    /* ESTRUCTURA DEL ÁRBOL GENEALÓGICO */
+    .tree-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      background-color: #fff;
+      border: 3px solid #1a1a1a;
+      padding: 1.5rem 1rem;
+      box-shadow: 6px 6px 0px #1a1a1a;
+      position: relative;
+    }
+
+    .tree-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    /* ESPACIOS VACÍOS DEL ÁRBOL */
+    .drop-zone {
+      border: 3px dashed #1a1a1a;
+      background-color: #f9f9f9;
+      width: 95px;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      position: relative;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .drop-zone:hover {
+      background-color: #FFE66D;
+    }
+
+    .drop-zone-label {
+      font-size: 0.75rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-align: center;
+      color: #777;
+      pointer-events: none;
+    }
+
+    /* BOTÓN VERIFICAR */
+    .brutal-btn {
+      display: block;
+      width: 100%;
+      padding: 1.2rem;
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: white;
+      background-color: #1a1a1a;
+      border: 4px solid #1a1a1a;
+      cursor: pointer;
+      box-shadow: 5px 5px 0px #FF6B9D;
+      margin-top: 2rem;
+    }
+
+    .brutal-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 7px 7px 0px #A8E6CF;
+    }
+
+    #result-box {
+      margin-top: 1.5rem;
+      padding: 1.2rem;
+      border: 3px solid #1a1a1a;
+      display: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: center;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    /* ADAPTACIÓN MÓVIL SÓLIDA */
+    @media (min-width: 768px) {
+      body { padding: 2rem; }
+      .quiz-container { padding: 2.5rem; box-shadow: 12px 12px 0px #1a1a1a; }
+      h1 { font-size: 3rem; }
+      .member-card { width: 110px; }
+      .member-card img { height: 80px; }
+      .member-card span { font-size: 0.85rem; }
+      .drop-zone { width: 120px; min-height: 130px; }
+      .drop-zone-label { font-size: 0.85rem; }
+      .tree-container { gap: 2.5rem; padding: 2.5rem; }
+    }
+  </style>
+  <script src="../../rigo.js"></script>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <div class="welcome-badge" id="student-tag">Cargando estudiante...</div>
+    
+    <h1>7th Grade - Family & Relationships</h1>
+    <div class="part-title">PART 1: My Family Tree</div>
+
+    <!-- BANCO DE IMÁGENES -->
+    <div class="bank-section">
+      <div class="bank-instruction">1. Selecciona un miembro y luego toca el espacio correcto en el árbol:</div>
+      <div class="image-bank" id="image-bank">
+        <!-- Las imágenes corresponden exactamente a los nombres de archivo de image_c3391d.png -->
+        <div class="member-card" data-member="Grandfather">
+          <img src="img Grandfather.png" alt="Grandfather">
+          <span>Grandfather</span>
+        </div>
+        <div class="member-card" data-member="Grandmother">
+          <img src="img Grandmother.png" alt="Grandmother">
+          <span>Grandmother</span>
+        </div>
+        <div class="member-card" data-member="Father">
+          <img src="img Father.png" alt="Father">
+          <span>Father</span>
+        </div>
+        <div class="member-card" data-member="Mother">
+          <img src="img Mother.png" alt="Mother">
+          <span>Mother</span>
+        </div>
+        <div class="member-card" data-member="Uncle">
+          <img src="img Uncle.png" alt="Uncle">
+          <span>Uncle</span>
+        </div>
+        <div class="member-card" data-member="Brother">
+          <img src="img Brother.png" alt="Brother">
+          <span>Brother</span>
+        </div>
+        <div class="member-card" data-member="Me">
+          <img src="img Me.png" alt="Me">
+          <span>Me (Yo)</span>
+        </div>
+        <div class="member-card" data-member="Sister">
+          <img src="img Sister.png" alt="Sister">
+          <span>Sister</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁRBOL GENEALÓGICO -->
+    <div class="tree-container">
+      
+      <!-- Nivel 1: Abuelos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Grandfather">
+          <div class="drop-zone-label">Grandfather</div>
+        </div>
+        <div class="drop-zone" data-expected="Grandmother">
+          <div class="drop-zone-label">Grandmother</div>
+        </div>
+      </div>
+
+      <!-- Nivel 2: Padres y Tíos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Father">
+          <div class="drop-zone-label">Father</div>
+        </div>
+        <div class="drop-zone" data-expected="Mother">
+          <div class="drop-zone-label">Mother</div>
+        </div>
+        <div class="drop-zone" data-expected="Uncle">
+          <div class="drop-zone-label">Uncle</div>
+        </div>
+      </div>
+
+      <!-- Nivel 3: Hijos / Hermanos -->
+      <div class="tree-row">
+        <div class="drop-zone" data-expected="Brother">
+          <div class="drop-zone-label">Brother</div>
+        </div>
+        <div class="drop-zone" data-expected="Me">
+          <div class="drop-zone-label">Me</div>
+        </div>
+        <div class="drop-zone" data-expected="Sister">
+          <div class="drop-zone-label">Sister</div>
+        </div>
+      </div>
+
+    </div>
+
+    <button type="button" class="brutal-btn" id="submit-part1">Verificar Árbol Genealógico</button>
+    <div id="result-box"></div>
+  </div>
+
+  <rigo-mascot id="rigo-companion" grade="Séptimo"></rigo-mascot>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const rigo = document.getElementById('rigo-companion');
+      const studentTag = document.getElementById('student-tag');
+      const imageBank = document.getElementById('image-bank');
+      const dropZones = document.querySelectorAll('.drop-zone');
+      const submitBtn = document.getElementById('submit-part1');
+      const resultBox = document.getElementById('result-box');
+
+      // Leer parámetros del estudiante desde la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const studentName = urlParams.get('student') || "Estudiante de 7°";
+      const nie = urlParams.get('nie') || "";
+      studentTag.textContent = ` Alumno: ${studentName} (NIE: ${nie})`;
+
+      // FRASES ADAPTADAS PARA RIGO (Tema: Familia)
+      setTimeout(() => {
+        if (rigo) {
+          rigo.setEmotion('happy');
+          rigo.say(`¡Welcome, ${studentName.split(' ')[0]}! Ayúdame a ordenar mi árbol familiar. ¡Los abuelos van arriba!`, 5000);
+        }
+      }, 1000);
+
+      // Sistema de interacción Clic/Tap adaptado a móviles
+      let selectedCard = null;
+
+      const cards = document.querySelectorAll('.member-card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          // Deseleccionar previa
+          if (selectedCard) {
+            selectedCard.classList.remove('selected');
+          }
+          
+          // Si hace clic en la misma, la deselecciona
+          if (selectedCard === card) {
+            selectedCard = null;
+            return;
+          }
+
+          selectedCard = card;
+          card.classList.add('selected');
+
+          if (rigo && Math.random() > 0.5) {
+            rigo.setEmotion('thinking');
+            rigo.say(`¿Dónde colocarás a ${card.dataset.member}? Piensa bien.`, 2500);
+          }
+        });
+      });
+
+      dropZones.forEach(zone => {
+        zone.addEventListener('click', () => {
+          // Si la zona ya tiene un miembro asignado, lo regresa al banco
+          const existingCardId = zone.dataset.currentMember;
+          if (existingCardId) {
+            const originalCard = imageBank.querySelector(`[data-member="${existingCardId}"]`);
+            if (originalCard) originalCard.style.display = 'block';
+            
+            zone.innerHTML = `<div class="drop-zone-label">${zone.dataset.expected}</div>`;
+            delete zone.dataset.currentMember;
+            zone.style.borderStyle = 'dashed';
+            zone.style.backgroundColor = '#f9f9f9';
+            return;
+          }
+
+          // Si hay una tarjeta seleccionada, la coloca aquí
+          if (selectedCard) {
+            const memberType = selectedCard.dataset.member;
+            
+            // Mover visualmente clonando el contenido de la tarjeta dentro de la zona
+            zone.innerHTML = selectedCard.innerHTML;
+            zone.dataset.currentMember = memberType;
+            zone.style.borderStyle = 'solid';
+            zone.style.backgroundColor = '#ffffff';
+
+            // Ocultar del banco
+            selectedCard.style.display = 'none';
+            selectedCard.classList.remove('selected');
+            selectedCard = null;
+
+            if (rigo) {
+              rigo.setEmotion('sneaky');
+              rigo.say("¡Eso es! Sigamos completando las generaciones.", 2000);
+            }
+          }
+        });
+      });
+
+      // Calificación de la Parte 1
+      submitBtn.addEventListener('click', () => {
+        let totalZones = dropZones.length;
+        let correctAnswers = 0;
+        let incomplete = false;
+
+        dropZones.forEach(zone => {
+          const current = zone.dataset.currentMember;
+          const expected = zone.dataset.expected;
+
+          if (!current) {
+            incomplete = true;
+          } else if (current === expected) {
+            correctAnswers++;
+          }
+        });
+
+        if (incomplete) {
+          if (rigo) {
+            rigo.setEmotion('confused');
+            rigo.say("¡Hey! No dejes espacios vacíos en el árbol familiar.", 3500);
+          }
+          resultBox.style.display = "block";
+          resultBox.style.backgroundColor = "#FFE66D";
+          resultBox.textContent = "⚠️ Por favor, coloca a todos los miembros de la familia antes de revisar.";
+          return;
+        }
+
+        resultBox.style.display = "block";
+        if (correctAnswers === totalZones) {
+          resultBox.style.backgroundColor = "#A8E6CF";
+          resultBox.textContent = `¡Perfecto! Todo el árbol genealógico es correcto (${correctAnswers}/${totalZones}).`;
+          if (rigo) {
+            rigo.setEmotion('excited');
+            rigo.say("¡Excelente! Has identificado perfectamente a toda la familia. Quedó genial.", 4500);
+          }
+        } else {
+          resultBox.style.backgroundColor = "#FF6B9D";
+          resultBox.textContent = `Tienes algunos miembros fuera de lugar. Revisa las posiciones (${correctAnswers}/${totalZones} correctos).`;
+          if (rigo) {
+            rigo.setEmotion('sad');
+            rigo.say("Oh, algunos parientes están confundidos de posición. ¡Toca un espacio para regresarlos al banco!", 4500);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
   <style>
     /* RESET BRUTALISTA */
     * { box-sizing: border-box; margin: 0; padding: 0; }
