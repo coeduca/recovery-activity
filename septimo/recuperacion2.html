@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
-  <title>Quiz de Recuperación - 7° Grado | Part 1</title>
+  <title>Quiz de Recuperación - 7º Grado | Part 1</title>
   <style>
     /* RESET BRUTALISTA & RESPONSIVO */
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,18 +19,16 @@
       flex-direction: column;
       align-items: center;
     }
-
     .quiz-container {
       background-color: #ffffff;
       border: 4px solid #1a1a1a;
       box-shadow: 8px 8px 0px #1a1a1a;
       padding: 1.5rem;
-      max-width: 800px;
+      max-width: 900px;
       width: 100%;
       margin-bottom: 5rem;
       transform: rotate(-0.2deg);
     }
-
     .welcome-badge {
       background-color: #FF6B9D;
       color: white;
@@ -42,7 +40,6 @@
       margin-bottom: 1.5rem;
       box-shadow: 4px 4px 0px #1a1a1a;
     }
-
     h1 {
       font-family: 'Impact', sans-serif;
       font-size: 2.2rem;
@@ -50,7 +47,6 @@
       margin-bottom: 0.5rem;
       line-height: 1;
     }
-
     .part-title {
       font-family: 'Arial Black', sans-serif;
       font-size: 1.2rem;
@@ -69,14 +65,12 @@
       box-shadow: 5px 5px 0px #1a1a1a;
       margin-bottom: 2rem;
     }
-
     .bank-instruction {
       font-weight: 900;
       margin-bottom: 0.8rem;
       text-transform: uppercase;
       font-size: 0.9rem;
     }
-
     .image-bank {
       display: flex;
       gap: 10px;
@@ -98,7 +92,6 @@
     .member-card:active {
       cursor: grabbing;
     }
-
     .member-card img {
       width: 100%;
       height: 65px;
@@ -107,14 +100,12 @@
       margin-bottom: 4px;
       background-color: #fafafa;
     }
-
     .member-card span {
       font-size: 0.75rem;
       font-weight: bold;
       display: block;
       word-break: break-word;
     }
-
     .member-card.selected {
       background-color: #FF6B9D;
       color: white;
@@ -122,42 +113,103 @@
       box-shadow: 5px 5px 0px #1a1a1a;
     }
 
-    /* ESTRUCTURA DEL ÁRBOL GENEALÓGICO */
+    /* ESTRUCTURA DEL ÁRBOL GENEALÓGICO BRUTALISTA */
     .tree-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
       background-color: #fff;
       border: 3px solid #1a1a1a;
       padding: 1.5rem 1rem;
       box-shadow: 6px 6px 0px #1a1a1a;
-      position: relative;
+      overflow-x: auto; /* Permite scroll en pantallas muy pequeñas */
+      margin-bottom: 1.5rem;
     }
 
-    .tree-row {
+    .tree {
       display: flex;
       justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
+      padding-bottom: 1rem;
+    }
+    .tree ul {
+      padding-top: 24px;
       position: relative;
-      z-index: 5;
+      display: flex;
+      justify-content: center;
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .tree li {
+      float: left;
+      text-align: center;
+      list-style-type: none;
+      position: relative;
+      padding: 24px 10px 0 10px;
     }
 
-    /* LÍNEAS DE UNIÓN BRUTALISTAS */
-    .tree-connector {
+    /* Conectores horizontales usando CSS borders */
+    .tree li::before, .tree li::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 50%;
+      border-top: 4px solid #1a1a1a; /* Estilo brutalista */
+      width: 50%;
+      height: 24px;
+    }
+    .tree li::after {
+      right: auto;
+      left: 50%;
+      border-left: 4px solid #1a1a1a;
+    }
+    .tree li:only-child::after, .tree li:only-child::before {
+      display: none;
+    }
+    .tree li:only-child {
+      padding-top: 0;
+    }
+    .tree li:first-child::before, .tree li:last-child::after {
+      border: 0 none;
+    }
+    .tree li:last-child::before {
+      border-right: 4px solid #1a1a1a;
+    }
+
+    /* Conectores verticales hacia los hijos */
+    .tree ul ul::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      border-left: 4px solid #1a1a1a;
+      width: 0;
+      height: 24px;
+      transform: translateX(-2px); /* Centra el borde de 4px */
+    }
+
+    /* Nodos Pareja (Abuelos, Padres) */
+    .node-group {
+      display: inline-flex;
+      gap: 20px;
       position: relative;
-      width: 100%;
-      display: flex;
       justify-content: center;
-      margin: -0.2rem 0;
+      align-items: center;
+    }
+    /* Línea horizontal que une a las parejas */
+    .node-group::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px; /* Cubre el espacio del gap (20px) */
+      height: 4px;
+      background-color: #1a1a1a;
+      z-index: 0;
+    }
+    /* Aseguramos que la caja esté por encima de la línea */
+    .node-group .drop-zone {
+      position: relative;
       z-index: 1;
     }
-    .line-v {
-      width: 4px;
-      height: 24px;
-      background-color: #1a1a1a;
-    }
-    
+
     /* ESPACIOS VACÍOS DEL ÁRBOL */
     .drop-zone {
       border: 3px dashed #1a1a1a;
@@ -173,21 +225,17 @@
       transition: background-color 0.2s ease, border-style 0.15s ease;
       cursor: pointer;
     }
-
     .drop-zone:hover {
       background-color: #FFE66D;
     }
-
     .drop-zone-label {
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       font-weight: 900;
       text-transform: uppercase;
       text-align: center;
       color: #777;
       pointer-events: none;
     }
-
-    /* SOLUCIÓN AL TAMAÑO REAL DE IMÁGENES DENTRO DEL ÁRBOL */
     .drop-zone img {
       width: 100%;
       height: 65px;
@@ -197,7 +245,7 @@
       background-color: #fafafa;
     }
     .drop-zone span {
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       font-weight: bold;
       display: block;
       word-break: break-word;
@@ -219,12 +267,10 @@
       box-shadow: 5px 5px 0px #FF6B9D;
       margin-top: 2rem;
     }
-
     .brutal-btn:hover {
       transform: translate(-2px, -2px);
       box-shadow: 7px 7px 0px #A8E6CF;
     }
-
     #result-box {
       margin-top: 1.5rem;
       padding: 1.2rem;
@@ -236,7 +282,7 @@
       box-shadow: 4px 4px 0px #1a1a1a;
     }
 
-    /* ADAPTACIÓN MÓVIL SÓLIDA / PC PANTALLAS GRANDES */
+    /* ADAPTACIÓN PANTALLAS GRANDES */
     @media (min-width: 768px) {
       body { padding: 2rem; }
       .quiz-container { padding: 2.5rem; box-shadow: 12px 12px 0px #1a1a1a; }
@@ -246,34 +292,16 @@
       .member-card span { font-size: 0.85rem; }
       
       .drop-zone { width: 120px; min-height: 130px; }
-      .drop-zone-label { font-size: 0.85rem; }
+      .drop-zone-label { font-size: 0.95rem; }
       .drop-zone img { height: 80px; }
-      .drop-zone span { font-size: 0.85rem; }
+      .drop-zone span { font-size: 0.95rem; }
       
-      .tree-container { gap: 1.5rem; padding: 2.5rem; }
-      .line-v { height: 40px; }
-      
-      /* Ramificaciones horizontales en escritorio */
-      .tree-connector::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        height: 4px;
-        background-color: #1a1a1a;
-        z-index: 1;
-      }
-      #conn-1::before {
-        width: 140px; /* Une abuelos */
-      }
-      #conn-2::before {
-        width: 280px; /* Une línea de padres y tíos */
-      }
+      .tree-container { padding: 2.5rem; }
     }
   </style>
   <script src="../../rigo.js"></script>
 </head>
 <body>
-
   <div class="quiz-container">
     <div class="welcome-badge" id="student-tag">Cargando estudiante...</div>
     
@@ -283,6 +311,7 @@
     <div class="bank-section">
       <div class="bank-instruction">1. Arrastra los miembros o tócalos para ubicarlos en el árbol:</div>
       <div class="image-bank" id="image-bank">
+        <!-- Textos en el banco se mantienen en INGLÉS -->
         <div class="member-card" data-member="Grandfather" draggable="true">
           <img src="img Grandfather.png" alt="Grandfather">
           <span>Grandfather</span>
@@ -319,48 +348,58 @@
     </div>
 
     <div class="tree-container">
-      
-      <div class="tree-row">
-        <div class="drop-zone" data-expected="Grandfamily" data-expected-alt="Grandfather" data-expected="Grandfather">
-          <div class="drop-zone-label">Grandfather</div>
-        </div>
-        <div class="drop-zone" data-expected="Grandmother">
-          <div class="drop-zone-label">Grandmother</div>
-        </div>
+      <div class="tree">
+        <ul>
+          <li>
+            <!-- 1ra Generación: Abuelos -->
+            <div class="node-group">
+              <div class="drop-zone" data-expected="Grandfather" data-spanish="Abuelo">
+                <div class="drop-zone-label">Abuelo</div>
+              </div>
+              <div class="drop-zone" data-expected="Grandmother" data-spanish="Abuela">
+                <div class="drop-zone-label">Abuela</div>
+              </div>
+            </div>
+            <ul>
+              <!-- 2da Generación: Tío -->
+              <li>
+                <div class="drop-zone" data-expected="Uncle" data-spanish="Tío">
+                  <div class="drop-zone-label">Tío</div>
+                </div>
+              </li>
+              <!-- 2da Generación: Padres -->
+              <li>
+                <div class="node-group">
+                  <div class="drop-zone" data-expected="Father" data-spanish="Padre">
+                    <div class="drop-zone-label">Padre</div>
+                  </div>
+                  <div class="drop-zone" data-expected="Mother" data-spanish="Madre">
+                    <div class="drop-zone-label">Madre</div>
+                  </div>
+                </div>
+                <!-- 3ra Generación: Hijos -->
+                <ul>
+                  <li>
+                    <div class="drop-zone" data-expected="Brother" data-spanish="Hermano">
+                      <div class="drop-zone-label">Hermano</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="drop-zone" data-expected="Me" data-spanish="Yo">
+                      <div class="drop-zone-label">Yo</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="drop-zone" data-expected="Sister" data-spanish="Hermana">
+                      <div class="drop-zone-label">Hermana</div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
-
-      <div class="tree-connector" id="conn-1">
-        <div class="line-v"></div>
-      </div>
-
-      <div class="tree-row">
-        <div class="drop-zone" data-expected="Father">
-          <div class="drop-zone-label">Father</div>
-        </div>
-        <div class="drop-zone" data-expected="Mother">
-          <div class="drop-zone-label">Mother</div>
-        </div>
-        <div class="drop-zone" data-expected="Uncle">
-          <div class="drop-zone-label">Uncle</div>
-        </div>
-      </div>
-
-      <div class="tree-connector" id="conn-2">
-        <div class="line-v"></div>
-      </div>
-
-      <div class="tree-row">
-        <div class="drop-zone" data-expected="Brother">
-          <div class="drop-zone-label">Brother</div>
-        </div>
-        <div class="drop-zone" data-expected="Me">
-          <div class="drop-zone-label">Me</div>
-        </div>
-        <div class="drop-zone" data-expected="Sister">
-          <div class="drop-zone-label">Sister</div>
-        </div>
-      </div>
-
     </div>
 
     <button type="button" class="brutal-btn" id="submit-part1">Verificar Árbol Genealógico</button>
@@ -380,9 +419,10 @@
 
       // Leer parámetros del estudiante desde la URL
       const urlParams = new URLSearchParams(window.location.search);
-      const studentName = urlParams.get('student') || "Estudiante de 7°";
+      const studentName = urlParams.get('student') || "Estudiante de 7º";
       const nie = urlParams.get('nie') || "";
-      studentTag.textContent = ` Alumno: ${studentName} (NIE: ${nie})`;
+
+      studentTag.textContent = `👦 Alumno: ${studentName} (NIE: ${nie})`;
 
       setTimeout(() => {
         if (rigo) {
@@ -403,7 +443,9 @@
           const originalCard = imageBank.querySelector(`[data-member="${existingMember}"]`);
           if (originalCard) originalCard.style.display = 'block';
           
-          zone.innerHTML = `<div class="drop-zone-label">${zone.getAttribute('data-expected')}</div>`;
+          // Revertir a la etiqueta en español original
+          const spanishName = zone.getAttribute('data-spanish');
+          zone.innerHTML = `<div class="drop-zone-label">${spanishName}</div>`;
           delete zone.dataset.currentMember;
           zone.style.borderStyle = 'dashed';
           zone.style.backgroundColor = '#f9f9f9';
@@ -419,9 +461,11 @@
         }
 
         const memberType = card.dataset.member;
+        const imgSrc = card.querySelector('img').src;
+        const spanishName = zone.getAttribute('data-spanish');
         
-        // Copiar HTML interno preservando las dimensiones correctas definidas en CSS
-        zone.innerHTML = card.innerHTML;
+        // Insertar imagen pero mantener texto en ESPAÑOL
+        zone.innerHTML = `<img src="${imgSrc}" alt="${memberType}"><span>${spanishName}</span>`;
         zone.dataset.currentMember = memberType;
         zone.style.borderStyle = 'solid';
         zone.style.backgroundColor = '#ffffff';
@@ -441,6 +485,7 @@
       // ==========================================
       // MANEJADORES DE COMPORTAMIENTO (DRAG & DROP)
       // ==========================================
+
       const cards = document.querySelectorAll('.member-card');
       cards.forEach(card => {
         // Evento clásico click (Híbrido para Móviles)
@@ -517,7 +562,7 @@
         dropZones.forEach(zone => {
           const current = zone.dataset.currentMember;
           const expected = zone.getAttribute('data-expected');
-
+          
           if (!current) {
             incomplete = true;
           } else if (current === expected) {
