@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
-  <title>Quiz de Recuperación - 7º Grado | Part 1</title>
+  <title>Quiz de Recuperación - 7º Grado</title>
   <style>
     /* RESET BRUTALISTA & RESPONSIVO */
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -57,7 +57,14 @@
       margin-bottom: 1.5rem;
     }
 
-    /* BANCO DE IMÁGENES (MÓVIL Y PC) */
+    /* SEPARADOR */
+    .brutal-divider {
+      border: none;
+      border-top: 6px dashed #1a1a1a;
+      margin: 3rem 0;
+    }
+
+    /* BANCO DE ELEMENTOS (IMÁGENES Y PALABRAS) */
     .bank-section {
       border: 3px solid #1a1a1a;
       padding: 1rem;
@@ -71,14 +78,14 @@
       text-transform: uppercase;
       font-size: 0.9rem;
     }
-    .image-bank {
+    .image-bank, .word-bank {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
       justify-content: center;
     }
 
-    /* TARJETAS DE MIEMBROS */
+    /* TARJETAS DE MIEMBROS (PARTE 1) */
     .member-card {
       background-color: white;
       border: 3px solid #1a1a1a;
@@ -89,9 +96,7 @@
       box-shadow: 3px 3px 0px #1a1a1a;
       transition: all 0.15s ease;
     }
-    .member-card:active {
-      cursor: grabbing;
-    }
+    .member-card:active { cursor: grabbing; }
     .member-card img {
       width: 100%;
       height: 65px;
@@ -113,16 +118,34 @@
       box-shadow: 5px 5px 0px #1a1a1a;
     }
 
-    /* ESTRUCTURA DEL ÁRBOL GENEALÓGICO BRUTALISTA */
+    /* TARJETAS DE PALABRAS (PARTE 2) */
+    .word-card {
+      background-color: white;
+      border: 3px solid #1a1a1a;
+      padding: 8px 12px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: grab;
+      box-shadow: 4px 4px 0px #1a1a1a;
+      transition: all 0.1s ease;
+    }
+    .word-card:active { cursor: grabbing; }
+    .word-card.selected {
+      background-color: #FF6B9D;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 6px 6px 0px #1a1a1a;
+    }
+
+    /* ESTRUCTURA DEL ÁRBOL GENEALÓGICO (PARTE 1) */
     .tree-container {
       background-color: #fff;
       border: 3px solid #1a1a1a;
       padding: 1.5rem 1rem;
       box-shadow: 6px 6px 0px #1a1a1a;
-      overflow-x: auto; /* Permite scroll en pantallas muy pequeñas */
+      overflow-x: auto;
       margin-bottom: 1.5rem;
     }
-
     .tree {
       display: flex;
       justify-content: center;
@@ -143,36 +166,20 @@
       position: relative;
       padding: 24px 10px 0 10px;
     }
-
-    /* Conectores horizontales usando CSS borders */
     .tree li::before, .tree li::after {
       content: '';
       position: absolute;
       top: 0;
       right: 50%;
-      border-top: 4px solid #1a1a1a; /* Estilo brutalista */
+      border-top: 4px solid #1a1a1a;
       width: 50%;
       height: 24px;
     }
-    .tree li::after {
-      right: auto;
-      left: 50%;
-      border-left: 4px solid #1a1a1a;
-    }
-    .tree li:only-child::after, .tree li:only-child::before {
-      display: none;
-    }
-    .tree li:only-child {
-      padding-top: 0;
-    }
-    .tree li:first-child::before, .tree li:last-child::after {
-      border: 0 none;
-    }
-    .tree li:last-child::before {
-      border-right: 4px solid #1a1a1a;
-    }
-
-    /* Conectores verticales hacia los hijos */
+    .tree li::after { right: auto; left: 50%; border-left: 4px solid #1a1a1a; }
+    .tree li:only-child::after, .tree li:only-child::before { display: none; }
+    .tree li:only-child { padding-top: 0; }
+    .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
+    .tree li:last-child::before { border-right: 4px solid #1a1a1a; }
     .tree ul ul::before {
       content: '';
       position: absolute;
@@ -181,10 +188,8 @@
       border-left: 4px solid #1a1a1a;
       width: 0;
       height: 24px;
-      transform: translateX(-2px); /* Centra el borde de 4px */
+      transform: translateX(-2px);
     }
-
-    /* Nodos Pareja (Abuelos, Padres) */
     .node-group {
       display: inline-flex;
       gap: 20px;
@@ -192,25 +197,20 @@
       justify-content: center;
       align-items: center;
     }
-    /* Línea horizontal que une a las parejas */
     .node-group::after {
       content: '';
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 40px; /* Cubre el espacio del gap (20px) */
+      width: 40px;
       height: 4px;
       background-color: #1a1a1a;
       z-index: 0;
     }
-    /* Aseguramos que la caja esté por encima de la línea */
-    .node-group .drop-zone {
-      position: relative;
-      z-index: 1;
-    }
+    .node-group .drop-zone { position: relative; z-index: 1; }
 
-    /* ESPACIOS VACÍOS DEL ÁRBOL */
+    /* ZONAS PARA SOLTAR DEL ÁRBOL (PARTE 1) */
     .drop-zone {
       border: 3px dashed #1a1a1a;
       background-color: #f9f9f9;
@@ -225,9 +225,7 @@
       transition: background-color 0.2s ease, border-style 0.15s ease;
       cursor: pointer;
     }
-    .drop-zone:hover {
-      background-color: #FFE66D;
-    }
+    .drop-zone:hover { background-color: #FFE66D; }
     .drop-zone-label {
       font-size: 0.85rem;
       font-weight: 900;
@@ -252,7 +250,73 @@
       text-align: center;
     }
 
-    /* BOTÓN VERIFICAR */
+    /* EMOJI PROTAGONISTA & AUDIO (PARTE 2) */
+    .audio-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      background-color: #FFE66D;
+      border: 3px solid #1a1a1a;
+      padding: 1.5rem;
+      box-shadow: 6px 6px 0px #1a1a1a;
+    }
+    .emoji-protagonist {
+      font-size: 5rem;
+      margin-bottom: 10px;
+      animation: pulse 1s infinite alternate;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+    audio {
+      width: 100%;
+      max-width: 350px;
+      border: 2px solid #1a1a1a;
+      border-radius: 25px;
+    }
+
+    /* ORACIONES (PARTE 2) */
+    .sentences-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .sentence-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      background-color: #f2f2f2;
+      padding: 10px 15px;
+      border: 3px solid #1a1a1a;
+      box-shadow: 4px 4px 0px #1a1a1a;
+    }
+    .word-drop-zone {
+      min-width: 140px;
+      height: 40px;
+      border: 3px dashed #1a1a1a;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 900;
+      color: #FF6B9D;
+      transition: all 0.2s ease;
+    }
+    .word-drop-zone:hover { background-color: #A8E6CF; }
+    .word-drop-zone.filled {
+      border-style: solid;
+      background-color: #1a1a1a;
+      color: #A8E6CF;
+    }
+
+    /* BOTONES Y ALERTAS */
     .brutal-btn {
       display: block;
       width: 100%;
@@ -265,13 +329,13 @@
       border: 4px solid #1a1a1a;
       cursor: pointer;
       box-shadow: 5px 5px 0px #FF6B9D;
-      margin-top: 2rem;
+      margin-top: 1.5rem;
     }
     .brutal-btn:hover {
       transform: translate(-2px, -2px);
       box-shadow: 7px 7px 0px #A8E6CF;
     }
-    #result-box {
+    .result-box {
       margin-top: 1.5rem;
       padding: 1.2rem;
       border: 3px solid #1a1a1a;
@@ -290,13 +354,13 @@
       .member-card { width: 110px; }
       .member-card img { height: 80px; }
       .member-card span { font-size: 0.85rem; }
-      
       .drop-zone { width: 120px; min-height: 130px; }
       .drop-zone-label { font-size: 0.95rem; }
       .drop-zone img { height: 80px; }
       .drop-zone span { font-size: 0.95rem; }
-      
       .tree-container { padding: 2.5rem; }
+      .sentence-row { font-size: 1.4rem; padding: 15px 20px; }
+      .emoji-protagonist { font-size: 6rem; }
     }
   </style>
   <script src="../../rigo.js"></script>
@@ -306,12 +370,13 @@
     <div class="welcome-badge" id="student-tag">Cargando estudiante...</div>
     
     <h1>7th Grade - Family & Relationships</h1>
+    
+    <!-- ================= PARTE 1 ================= -->
     <div class="part-title">PART 1: My Family Tree</div>
 
     <div class="bank-section">
       <div class="bank-instruction">1. Arrastra los miembros o tócalos para ubicarlos en el árbol:</div>
       <div class="image-bank" id="image-bank">
-        <!-- Textos en el banco se mantienen en INGLÉS -->
         <div class="member-card" data-member="Grandfather" draggable="true">
           <img src="img Grandfather.png" alt="Grandfather">
           <span>Grandfather</span>
@@ -351,7 +416,6 @@
       <div class="tree">
         <ul>
           <li>
-            <!-- 1ra Generación: Abuelos -->
             <div class="node-group">
               <div class="drop-zone" data-expected="Grandfather" data-spanish="Abuelo">
                 <div class="drop-zone-label">Abuelo</div>
@@ -361,13 +425,11 @@
               </div>
             </div>
             <ul>
-              <!-- 2da Generación: Tío -->
               <li>
                 <div class="drop-zone" data-expected="Uncle" data-spanish="Tío">
                   <div class="drop-zone-label">Tío</div>
                 </div>
               </li>
-              <!-- 2da Generación: Padres -->
               <li>
                 <div class="node-group">
                   <div class="drop-zone" data-expected="Father" data-spanish="Padre">
@@ -377,7 +439,6 @@
                     <div class="drop-zone-label">Madre</div>
                   </div>
                 </div>
-                <!-- 3ra Generación: Hijos -->
                 <ul>
                   <li>
                     <div class="drop-zone" data-expected="Brother" data-spanish="Hermano">
@@ -402,8 +463,65 @@
       </div>
     </div>
 
-    <button type="button" class="brutal-btn" id="submit-part1">Verificar Árbol Genealógico</button>
-    <div id="result-box"></div>
+    <button type="button" class="brutal-btn" id="submit-part1">Verificar Árbol</button>
+    <div id="result-box-1" class="result-box"></div>
+
+    <hr class="brutal-divider">
+
+    <!-- ================= PARTE 2 ================= -->
+    <div class="part-title">PART 2: Listen & Complete</div>
+
+    <div class="audio-wrapper">
+      <div class="emoji-protagonist" id="emoji-prota">😃</div>
+      <p style="font-weight: bold; margin-bottom: 10px;">¡Escucha con atención!</p>
+      <audio id="audio-part2" controls>
+        <source src="part2audio.mp3" type="audio/mpeg">
+        Tu navegador no soporta el audio.
+      </audio>
+    </div>
+
+    <div class="bank-section">
+      <div class="bank-instruction">2. Escucha el audio y ubica la palabra en la oración correcta:</div>
+      <div class="word-bank" id="word-bank">
+        <div class="word-card" data-word="Sister" draggable="true">Sister</div>
+        <div class="word-card" data-word="Mother" draggable="true">Mother</div>
+        <div class="word-card" data-word="Father" draggable="true">Father</div>
+        <div class="word-card" data-word="Grandmother" draggable="true">Grandmother</div>
+        <div class="word-card" data-word="Brother" draggable="true">Brother</div>
+      </div>
+    </div>
+
+    <div class="sentences-container">
+      <div class="sentence-row">
+        <span>1. Sofia is my</span>
+        <div class="word-drop-zone" data-expected="Sister"></div>
+        <span>.</span>
+      </div>
+      <div class="sentence-row">
+        <span>2. My</span>
+        <div class="word-drop-zone" data-expected="Mother"></div>
+        <span>is a great woman.</span>
+      </div>
+      <div class="sentence-row">
+        <span>3. You should know my</span>
+        <div class="word-drop-zone" data-expected="Father"></div>
+        <span>Luis.</span>
+      </div>
+      <div class="sentence-row">
+        <span>4. My</span>
+        <div class="word-drop-zone" data-expected="Grandmother"></div>
+        <span>is 83 years old.</span>
+      </div>
+      <div class="sentence-row">
+        <span>5. My</span>
+        <div class="word-drop-zone" data-expected="Brother"></div>
+        <span>and I like to play video games.</span>
+      </div>
+    </div>
+
+    <button type="button" class="brutal-btn" id="submit-part2">Verificar Oraciones</button>
+    <div id="result-box-2" class="result-box"></div>
+
   </div>
 
   <rigo-mascot id="rigo-companion" grade="Séptimo"></rigo-mascot>
@@ -412,11 +530,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const rigo = document.getElementById('rigo-companion');
       const studentTag = document.getElementById('student-tag');
-      const imageBank = document.getElementById('image-bank');
-      const dropZones = document.querySelectorAll('.drop-zone');
-      const submitBtn = document.getElementById('submit-part1');
-      const resultBox = document.getElementById('result-box');
-
+      
       // Leer parámetros del estudiante desde la URL
       const urlParams = new URLSearchParams(window.location.search);
       const studentName = urlParams.get('student') || "Estudiante de 7º";
@@ -427,23 +541,39 @@
       setTimeout(() => {
         if (rigo) {
           rigo.setEmotion('happy');
-          rigo.say(`¡Welcome, ${studentName.split(' ')[0]}! ¡Arrastra o toca los miembros para ordenar mi árbol familiar!`, 5000);
+          rigo.say(`¡Welcome, ${studentName.split(' ')[0]}! ¡Completa el árbol y escucha el audio!`, 6000);
         }
       }, 1000);
 
-      let selectedCard = null;
+      // ==========================================
+      // ANIMACIÓN DEL EMOJI PROTAGONISTA
+      // ==========================================
+      const emojis = ["😃", "🤔", "🧐", "😎", "🤩", "🤪", "😲", "🤓", "🥳", "🤠"];
+      const emojiProta = document.getElementById('emoji-prota');
+      
+      setInterval(() => {
+        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        emojiProta.textContent = randomEmoji;
+      }, 2000);
+
 
       // ==========================================
-      // FUNCIONES CENTRALIZADAS DE ASIGNACIÓN
+      // LÓGICA PARTE 1: ÁRBOL GENEALÓGICO
       // ==========================================
+      const imageBank = document.getElementById('image-bank');
+      const dropZonesTree = document.querySelectorAll('.tree-container .drop-zone');
+      const memberCards = document.querySelectorAll('.member-card');
+      const submitBtn1 = document.getElementById('submit-part1');
+      const resultBox1 = document.getElementById('result-box-1');
       
-      function removeCardFromZone(zone) {
+      let selectedMemberCard = null;
+
+      function removeCardFromTreeZone(zone) {
         const existingMember = zone.dataset.currentMember;
         if (existingMember) {
           const originalCard = imageBank.querySelector(`[data-member="${existingMember}"]`);
           if (originalCard) originalCard.style.display = 'block';
           
-          // Revertir a la etiqueta en español original
           const spanishName = zone.getAttribute('data-spanish');
           zone.innerHTML = `<div class="drop-zone-label">${spanishName}</div>`;
           delete zone.dataset.currentMember;
@@ -452,152 +582,224 @@
         }
       }
 
-      function placeCardInZone(zone, card) {
+      function placeCardInTreeZone(zone, card) {
         if (!card) return;
-        
-        // Si la zona destino ya tiene a alguien asignado, lo regresamos al banco primero
         if (zone.dataset.currentMember) {
-          removeCardFromZone(zone);
+          removeCardFromTreeZone(zone);
         }
 
         const memberType = card.dataset.member;
         const imgSrc = card.querySelector('img').src;
         const spanishName = zone.getAttribute('data-spanish');
         
-        // Insertar imagen pero mantener texto en ESPAÑOL
         zone.innerHTML = `<img src="${imgSrc}" alt="${memberType}"><span>${spanishName}</span>`;
         zone.dataset.currentMember = memberType;
         zone.style.borderStyle = 'solid';
         zone.style.backgroundColor = '#ffffff';
 
-        // Ocultar del banco
         card.style.display = 'none';
         card.classList.remove('selected');
-        
-        if (selectedCard === card) selectedCard = null;
+        selectedMemberCard = null;
 
         if (rigo) {
           rigo.setEmotion('sneaky');
-          rigo.say("¡Eso es! Sigamos completando las generaciones.", 2000);
+          rigo.say("¡Árbol tomando forma!", 2000);
         }
       }
 
-      // ==========================================
-      // MANEJADORES DE COMPORTAMIENTO (DRAG & DROP)
-      // ==========================================
-
-      const cards = document.querySelectorAll('.member-card');
-      cards.forEach(card => {
-        // Evento clásico click (Híbrido para Móviles)
+      memberCards.forEach(card => {
         card.addEventListener('click', (e) => {
           e.stopPropagation();
-          if (selectedCard) selectedCard.classList.remove('selected');
-          
-          if (selectedCard === card) {
-            selectedCard = null;
+          if (selectedMemberCard) selectedMemberCard.classList.remove('selected');
+          if (selectedMemberCard === card) {
+            selectedMemberCard = null;
             return;
           }
-
-          selectedCard = card;
+          selectedMemberCard = card;
           card.classList.add('selected');
-
-          if (rigo && Math.random() > 0.5) {
-            rigo.setEmotion('thinking');
-            rigo.say(`¿Dónde colocarás a ${card.dataset.member}? Piensa bien.`, 2500);
-          }
         });
 
-        // Eventos nativos de arrastre (PC / Mouse)
         card.addEventListener('dragstart', (e) => {
-          selectedCard = card;
+          selectedMemberCard = card;
           card.classList.add('selected');
-          e.dataTransfer.setData('text/plain', card.dataset.member);
+          e.dataTransfer.setData('text/plain', 'member');
         });
-
-        card.addEventListener('dragend', () => {
-          card.classList.remove('selected');
-        });
+        card.addEventListener('dragend', () => card.classList.remove('selected'));
       });
 
-      dropZones.forEach(zone => {
-        // Al hacer click (Híbrido / Remoción)
+      dropZonesTree.forEach(zone => {
         zone.addEventListener('click', () => {
           if (zone.dataset.currentMember) {
-            removeCardFromZone(zone);
-          } else if (selectedCard) {
-            placeCardInZone(zone, selectedCard);
+            removeCardFromTreeZone(zone);
+          } else if (selectedMemberCard) {
+            placeCardInTreeZone(zone, selectedMemberCard);
           }
         });
 
-        // Eventos Drag nativos en la zona
         zone.addEventListener('dragover', (e) => {
-          e.preventDefault(); // Requisito obligatorio para permitir soltar
-          if (!zone.dataset.currentMember) {
-            zone.style.backgroundColor = '#FFE66D';
-          }
+          e.preventDefault();
+          if (!zone.dataset.currentMember) zone.style.backgroundColor = '#FFE66D';
         });
 
         zone.addEventListener('dragleave', () => {
-          if (!zone.dataset.currentMember) {
-            zone.style.backgroundColor = '#f9f9f9';
-          } else {
-            zone.style.backgroundColor = '#ffffff';
-          }
+          zone.style.backgroundColor = zone.dataset.currentMember ? '#ffffff' : '#f9f9f9';
         });
 
         zone.addEventListener('drop', (e) => {
           e.preventDefault();
-          if (selectedCard) {
-            placeCardInZone(zone, selectedCard);
-          }
+          if (selectedMemberCard) placeCardInTreeZone(zone, selectedMemberCard);
         });
       });
 
-      // Calificación de la Actividad
-      submitBtn.addEventListener('click', () => {
-        let totalZones = dropZones.length;
-        let correctAnswers = 0;
+      submitBtn1.addEventListener('click', () => {
+        let total = dropZonesTree.length;
+        let corrects = 0;
         let incomplete = false;
 
-        dropZones.forEach(zone => {
+        dropZonesTree.forEach(zone => {
           const current = zone.dataset.currentMember;
           const expected = zone.getAttribute('data-expected');
-          
-          if (!current) {
-            incomplete = true;
-          } else if (current === expected) {
-            correctAnswers++;
-          }
+          if (!current) incomplete = true;
+          else if (current === expected) corrects++;
         });
 
         if (incomplete) {
-          if (rigo) {
-            rigo.setEmotion('confused');
-            rigo.say("¡Hey! No dejes espacios vacíos en el árbol familiar.", 3500);
-          }
-          resultBox.style.display = "block";
-          resultBox.style.backgroundColor = "#FFE66D";
-          resultBox.textContent = "⚠️ Por favor, coloca a todos los miembros de la familia antes de revisar.";
+          if (rigo) rigo.say("¡Llena todo el árbol primero!", 3000);
+          resultBox1.style.display = "block";
+          resultBox1.style.backgroundColor = "#FFE66D";
+          resultBox1.textContent = "⚠️ Faltan miembros por colocar.";
           return;
         }
 
-        resultBox.style.display = "block";
-        if (correctAnswers === totalZones) {
-          resultBox.style.backgroundColor = "#A8E6CF";
-          resultBox.textContent = `¡Perfecto! Todo el árbol genealógico es correcto (${correctAnswers}/${totalZones}).`;
-          if (rigo) {
-            rigo.setEmotion('excited');
-            rigo.say("¡Excelente! Has identificado perfectamente a toda la familia. Quedó genial.", 4500);
-          }
+        resultBox1.style.display = "block";
+        if (corrects === total) {
+          resultBox1.style.backgroundColor = "#A8E6CF";
+          resultBox1.textContent = `¡Excelente! Árbol Genealógico perfecto (${corrects}/${total}).`;
         } else {
-          resultBox.style.backgroundColor = "#FF6B9D";
-          resultBox.textContent = `Tienes algunos miembros fuera de lugar. Revisa las posiciones (${correctAnswers}/${totalZones} correctos).`;
-          if (rigo) {
-            rigo.setEmotion('sad');
-            rigo.say("Oh, algunos parientes están confundidos de posición. ¡Toca un espacio para regresarlos al banco!", 4500);
-          }
+          resultBox1.style.backgroundColor = "#FF6B9D";
+          resultBox1.textContent = `Revisa bien. Tienes (${corrects}/${total}) correctos.`;
         }
       });
+
+
+      // ==========================================
+      // LÓGICA PARTE 2: COMPLETAR ORACIONES
+      // ==========================================
+      const wordBank = document.getElementById('word-bank');
+      const wordCards = document.querySelectorAll('.word-card');
+      const wordDropZones = document.querySelectorAll('.word-drop-zone');
+      const submitBtn2 = document.getElementById('submit-part2');
+      const resultBox2 = document.getElementById('result-box-2');
+
+      let selectedWordCard = null;
+
+      function removeWordFromSentenceZone(zone) {
+        const existingWord = zone.dataset.currentWord;
+        if (existingWord) {
+          const originalCard = wordBank.querySelector(`[data-word="${existingWord}"]`);
+          if (originalCard) originalCard.style.display = 'block';
+          
+          zone.textContent = '';
+          delete zone.dataset.currentWord;
+          zone.classList.remove('filled');
+        }
+      }
+
+      function placeWordInSentenceZone(zone, card) {
+        if (!card) return;
+        if (zone.dataset.currentWord) {
+          removeWordFromSentenceZone(zone);
+        }
+
+        const word = card.dataset.word;
+        zone.textContent = word;
+        zone.dataset.currentWord = word;
+        zone.classList.add('filled');
+
+        card.style.display = 'none';
+        card.classList.remove('selected');
+        selectedWordCard = null;
+
+        if (rigo && Math.random() > 0.5) {
+          rigo.setEmotion('happy');
+          rigo.say("¡Buena elección!", 2000);
+        }
+      }
+
+      wordCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (selectedWordCard) selectedWordCard.classList.remove('selected');
+          if (selectedWordCard === card) {
+            selectedWordCard = null;
+            return;
+          }
+          selectedWordCard = card;
+          card.classList.add('selected');
+        });
+
+        card.addEventListener('dragstart', (e) => {
+          selectedWordCard = card;
+          card.classList.add('selected');
+          e.dataTransfer.setData('text/plain', 'word');
+        });
+        card.addEventListener('dragend', () => card.classList.remove('selected'));
+      });
+
+      wordDropZones.forEach(zone => {
+        zone.addEventListener('click', () => {
+          if (zone.dataset.currentWord) {
+            removeWordFromSentenceZone(zone);
+          } else if (selectedWordCard) {
+            placeWordInSentenceZone(zone, selectedWordCard);
+          }
+        });
+
+        zone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+        });
+
+        zone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          if (selectedWordCard) placeWordInSentenceZone(zone, selectedWordCard);
+        });
+      });
+
+      submitBtn2.addEventListener('click', () => {
+        let total = wordDropZones.length;
+        let corrects = 0;
+        let incomplete = false;
+
+        wordDropZones.forEach(zone => {
+          const current = zone.dataset.currentWord;
+          const expected = zone.getAttribute('data-expected');
+          if (!current) incomplete = true;
+          else if (current === expected) corrects++;
+        });
+
+        if (incomplete) {
+          if (rigo) rigo.say("¡Completa todas las oraciones!", 3000);
+          resultBox2.style.display = "block";
+          resultBox2.style.backgroundColor = "#FFE66D";
+          resultBox2.textContent = "⚠️ Faltan oraciones por completar.";
+          return;
+        }
+
+        resultBox2.style.display = "block";
+        if (corrects === total) {
+          resultBox2.style.backgroundColor = "#A8E6CF";
+          resultBox2.textContent = `¡Muy bien! Tienes buen oído (${corrects}/${total}).`;
+          if (rigo) {
+            rigo.setEmotion('musical');
+            rigo.say("¡Excelente listening skill!", 4000);
+          }
+        } else {
+          resultBox2.style.backgroundColor = "#FF6B9D";
+          resultBox2.textContent = `Revisa algunas oraciones. Tienes (${corrects}/${total}) correctas.`;
+          if (rigo) rigo.setEmotion('sad');
+        }
+      });
+
     });
   </script>
 </body>
