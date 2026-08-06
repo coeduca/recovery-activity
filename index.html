@@ -6,187 +6,315 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥕</text></svg>">
   <title>Actividades de Recuperación | English Ecosystem</title>
   <style>
-    /* RESET BRUTALISTA */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --ink: #171717;
+      --cream: #F3E9D2;
+      --cream-light: #FAF1DE;
+      --pink: #ED8FB3;
+      --green: #79C99E;
+      --orange: #F2A365;
+      --blue: #78C4E4;
+      --yellow: #EFD05A;
+    }
+
+    html {
+      color-scheme: light;
+    }
 
     body {
-      font-family: 'Courier New', Courier, monospace;
-      background-color: #FFE66D; /* Amarillo Rigo */
-      color: #1a1a1a;
-      padding: 1.2rem;
+      font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
       min-height: 100vh;
+      padding: clamp(1rem, 3vw, 2.25rem);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       overflow-x: hidden;
+      background:
+        radial-gradient(circle at 8% 12%, rgba(237, 143, 179, 0.74) 0 8%, transparent 8.25%),
+        radial-gradient(circle at 92% 14%, rgba(239, 208, 90, 0.78) 0 9%, transparent 9.25%),
+        radial-gradient(circle at 90% 88%, rgba(121, 201, 158, 0.76) 0 10%, transparent 10.25%),
+        linear-gradient(135deg, #78C4E4 0%, #9AD2E6 48%, #F2A365 100%);
+    }
+
+    button,
+    input {
+      font: inherit;
     }
 
     .brutal-container {
-      background-color: #ffffff;
-      border: 4px solid #1a1a1a;
-      box-shadow: 8px 8px 0px #1a1a1a; /* Sombra adaptada para móviles */
-      padding: 1.5rem; /* Ajustado para móviles */
-      max-width: 550px;
+      position: relative;
+      width: min(100%, 610px);
+      padding: clamp(1.25rem, 5vw, 2.7rem);
+      background-color: var(--cream);
+      border: 3px solid var(--ink);
+      border-radius: 22px;
+      overflow: hidden;
+    }
+
+    .brutal-container::before {
+      content: "";
+      display: block;
       width: 100%;
-      transform: rotate(-0.5deg);
-      transition: all 0.2s ease;
+      height: 13px;
+      margin-bottom: 1.4rem;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        var(--pink) 0 25%,
+        var(--green) 25% 50%,
+        var(--orange) 50% 75%,
+        var(--blue) 75% 100%
+      );
     }
 
     h1 {
-      font-family: 'Impact', 'Arial Black', sans-serif;
-      font-size: 2.2rem; /* Tamaño inicial para móviles */
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      line-height: 0.9;
-      margin-bottom: 1.5rem;
-      background-color: #FF6B9D; /* Rosa Rigo */
-      color: white;
-      padding: 10px 14px;
-      border: 4px solid #1a1a1a;
       display: inline-block;
-      transform: rotate(1.5deg);
-      box-shadow: 4px 4px 0px #1a1a1a;
       max-width: 100%;
-      word-wrap: break-word;
-    }
-
-    p {
-      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      padding: 12px 17px;
+      background-color: var(--yellow);
+      color: var(--ink);
+      border: 3px solid var(--ink);
+      border-radius: 14px;
+      font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+      font-size: clamp(2.3rem, 9vw, 3.7rem);
       font-weight: 900;
-      margin-bottom: 2rem;
-      line-height: 1.4;
-      border-left: 6px solid #4ECDC4; /* Teal Rigo */
-      padding-left: 12px;
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
     }
 
-    .form-group { margin-bottom: 1.8rem; }
+    .brutal-container > p {
+      margin-bottom: 1.5rem;
+      padding: 14px 16px;
+      background-color: var(--blue);
+      border: 3px solid var(--ink);
+      border-radius: 13px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+      padding: 15px;
+      background-color: #A7D7B9;
+      border: 3px solid var(--ink);
+      border-radius: 14px;
+    }
 
     label {
       display: block;
-      font-family: 'Arial Black', sans-serif;
-      font-size: 1rem;
+      margin-bottom: 0.65rem;
+      font-size: 0.98rem;
+      font-weight: 900;
+      letter-spacing: 0.025em;
       text-transform: uppercase;
-      margin-bottom: 0.6rem;
-      font-weight: bold;
     }
 
     input[type="text"] {
       width: 100%;
-      padding: 1rem;
-      font-family: inherit;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border: 4px solid #1a1a1a;
-      background-color: #A8E6CF;
+      min-height: 56px;
+      padding: 0.9rem 1rem;
+      color: var(--ink);
+      background-color: var(--cream-light);
+      border: 2.5px solid var(--ink);
+      border-radius: 10px;
       outline: none;
-      box-shadow: 5px 5px 0px #1a1a1a;
-      transition: all 0.1s ease;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.045em;
+      transition: background-color 0.15s ease, transform 0.15s ease;
     }
+
+    input[type="text"]::placeholder {
+      color: #665f54;
+      opacity: 0.78;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
     input[type="text"]:focus {
-      background-color: #4ECDC4;
-      box-shadow: 8px 8px 0px #1a1a1a;
-      transform: translate(-2px, -2px);
+      background-color: #C9E7F1;
+      transform: translateY(-1px);
+    }
+
+    input[type="text"]:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--ink);
+      outline-offset: 3px;
     }
 
     .brutal-btn {
       display: block;
       width: 100%;
-      padding: 1.2rem;
-      font-family: 'Arial Black', sans-serif;
-      font-size: 1.3rem;
-      text-transform: uppercase;
-      color: #ffffff;
-      background-color: #1a1a1a;
-      border: 4px solid #1a1a1a;
+      min-height: 58px;
+      padding: 1rem 1.2rem;
+      color: var(--ink);
+      background-color: var(--yellow);
+      border: 3px solid var(--ink);
+      border-radius: 12px;
       cursor: pointer;
-      box-shadow: 6px 6px 0px #4ECDC4;
-      transition: transform 0.05s ease, box-shadow 0.05s ease;
+      font-size: clamp(1.05rem, 4vw, 1.3rem);
+      font-weight: 900;
+      letter-spacing: 0.025em;
+      text-transform: uppercase;
+      transition: transform 0.15s ease, background-color 0.15s ease;
     }
+
     .brutal-btn:hover {
-      transform: translate(-3px, -3px);
-      box-shadow: 9px 9px 0px #FF6B9D;
+      background-color: var(--pink);
+      transform: translateY(-2px);
+    }
+
+    .brutal-btn:active {
+      transform: translateY(0);
+    }
+
+    .brutal-btn:disabled {
+      color: var(--ink) !important;
+      opacity: 1;
+      cursor: wait;
     }
 
     .badge-container {
-      margin-top: 2.5rem;
       display: flex;
-      gap: 12px;
       flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 1.35rem;
     }
-    .badge {
-      padding: 6px 12px;
-      font-weight: 900;
-      border: 3px solid #1a1a1a;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      box-shadow: 3px 3px 0px #1a1a1a;
-    }
-    .badge-teal { background-color: #4ECDC4; }
-    .badge-pink { background-color: #FF6B9D; color: white; }
-    .badge-green { background-color: #A8E6CF; }
 
-    /* MODAL BRUTALISTA */
+    .badge {
+      padding: 7px 11px;
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .badge-teal { background-color: var(--blue); }
+    .badge-pink { background-color: var(--pink); }
+    .badge-green { background-color: var(--green); }
+
+    /* Modal con el mismo brutalismo suave */
     .modal-overlay {
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background-color: rgba(26, 26, 26, 0.9);
+      inset: 0;
       z-index: 10000;
-      display: flex; justify-content: center; align-items: center;
-      opacity: 0; pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      background-color: rgba(23, 23, 23, 0.62);
+      opacity: 0;
+      pointer-events: none;
       transition: opacity 0.2s ease;
     }
-    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
     .brutal-modal {
-      background-color: #FF6B9D;
-      border: 4px solid #1a1a1a;
-      box-shadow: 10px 10px 0px #1a1a1a;
-      padding: 2rem;
-      max-width: 440px;
-      width: 90%;
+      width: min(100%, 460px);
+      padding: clamp(1.25rem, 5vw, 2rem);
+      background-color: var(--cream);
+      color: var(--ink);
+      border: 3px solid var(--ink);
+      border-radius: 18px;
       text-align: center;
-      color: #ffffff;
-      transform: scale(0.9) rotate(-1deg);
-      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform: translateY(14px) scale(0.97);
+      transition: transform 0.2s ease;
     }
-    .modal-overlay.active .brutal-modal { transform: scale(1) rotate(1deg); }
+
+    .modal-overlay.active .brutal-modal {
+      transform: translateY(0) scale(1);
+    }
 
     .brutal-modal h2 {
-      font-family: 'Impact', sans-serif;
-      font-size: 2.5rem;
+      display: inline-block;
       margin-bottom: 1rem;
-      -webkit-text-stroke: 1px #1a1a1a;
-      color: #FFE66D;
-    }
-    .brutal-modal p {
-      border-left: none; padding-left: 0; color: #1a1a1a;
-      background: #ffffff; padding: 12px; border: 3px solid #1a1a1a;
-      font-size: 1.05rem; font-weight: bold;
-    }
-    .modal-close-btn {
-      margin-top: 1.5rem; background-color: #1a1a1a; color: white;
-      padding: 0.8rem 1.5rem; font-family: 'Arial Black', sans-serif;
-      text-transform: uppercase; border: none; cursor: pointer;
-      box-shadow: 4px 4px 0px #4ECDC4; width: 100%;
+      padding: 9px 15px;
+      color: var(--ink);
+      background-color: var(--pink);
+      border: 3px solid var(--ink);
+      border-radius: 12px;
+      font-size: clamp(1.8rem, 8vw, 2.55rem);
+      font-weight: 900;
+      letter-spacing: 0.025em;
     }
 
-    /* MEDIA QUERY PARA AJUSTES EN PC / PANTALLAS GRANDES */
-    @media (min-width: 768px) {
+    .brutal-modal p {
+      margin: 0;
+      padding: 13px 14px;
+      color: var(--ink);
+      background-color: #F3C18E;
+      border: 2.5px solid var(--ink);
+      border-radius: 11px;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .modal-close-btn {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.85rem 1rem;
+      color: var(--ink);
+      background-color: var(--green);
+      border: 3px solid var(--ink);
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 900;
+      text-transform: uppercase;
+      transition: background-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .modal-close-btn:hover {
+      background-color: var(--blue);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 480px) {
       body {
-        padding: 2rem;
+        justify-content: flex-start;
       }
+
       .brutal-container {
-        padding: 2.5rem;
-        box-shadow: 12px 12px 0px #1a1a1a;
+        border-radius: 17px;
       }
+
+      .brutal-container::before {
+        height: 11px;
+        margin-bottom: 1.1rem;
+      }
+
       h1 {
-        font-size: 3.2rem;
-        padding: 12px 18px;
-        box-shadow: 6px 6px 0px #1a1a1a;
+        width: 100%;
+        text-align: center;
       }
-      .brutal-btn {
-        font-size: 1.4rem;
+
+      .badge-container {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .badge {
+        text-align: center;
       }
     }
   </style>
@@ -322,7 +450,8 @@
             
             enterBtn.disabled = true;
             enterBtn.textContent = "ABRIENDO ACTIVIDAD...";
-            enterBtn.style.backgroundColor = "#5AC850";
+            enterBtn.style.backgroundColor = "#79C99E";
+            enterBtn.style.color = "#171717";
 
             setTimeout(() => {
               window.location.href = `${targetUrl}?nie=${nieValue}&student=${encodeURIComponent(student.name)}`;
@@ -342,7 +471,8 @@
       if (enterBtn) {
         enterBtn.disabled = false;
         enterBtn.textContent = "¡INGRESAR AHORA!";
-        enterBtn.style.backgroundColor = "#1a1a1a";
+        enterBtn.style.backgroundColor = "#EFD05A";
+        enterBtn.style.color = "#171717";
       }
     });
   </script>
