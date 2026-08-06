@@ -3,31 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥕</text></svg>">
-  <title>Quiz de Recuperación - 7° Grado</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍲</text></svg>">
+  <title>Actividad de Recuperación - 9° Grado</title>
+  
+  <!-- Librería para generar PDF desde HTML -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <style>
+    /* RESET BRUTALISTA */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Courier New', Courier, monospace;
-      background-color: #4ECDC4; /* Fondo Teal Brutalista */
+      background-color: #4ECDC4;
       color: #1a1a1a;
-      padding: 2rem;
+      padding: 1rem;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow-x: hidden;
     }
-
     .quiz-container {
       background-color: #ffffff;
       border: 4px solid #1a1a1a;
-      box-shadow: 12px 12px 0px #1a1a1a;
-      padding: 2.5rem;
-      max-width: 600px;
+      box-shadow: 10px 10px 0px #1a1a1a;
+      padding: 2rem;
+      max-width: 800px;
       width: 100%;
       margin-bottom: 5rem;
     }
-
     .welcome-badge {
       background-color: #FF6B9D;
       color: white;
@@ -35,49 +39,119 @@
       border: 3px solid #1a1a1a;
       display: inline-block;
       font-weight: bold;
-      font-size: 1.1rem;
+      font-size: 1rem;
       margin-bottom: 1.5rem;
       box-shadow: 4px 4px 0px #1a1a1a;
     }
-
     h1 {
       font-family: 'Impact', sans-serif;
       font-size: 2.5rem;
       text-transform: uppercase;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.5rem;
       line-height: 1;
+      background-color: #FFE66D;
+      display: inline-block;
+      padding: 10px;
+      border: 3px solid #1a1a1a;
+      box-shadow: 5px 5px 0px #1a1a1a;
+      transform: rotate(-1deg);
     }
-
+    p.intro {
+      font-weight: 900;
+      font-size: 1.1rem;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+      border-left: 5px solid #FF6B9D;
+      padding-left: 10px;
+    }
+    .part-title {
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.3rem;
+      background-color: #1a1a1a;
+      color: #ffffff;
+      display: inline-block;
+      padding: 6px 12px;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      box-shadow: 4px 4px 0px #A8E6CF;
+    }
     .question-block {
       border: 3px solid #1a1a1a;
-      padding: 1.5rem;
+      padding: 1.2rem;
       margin-bottom: 1.5rem;
-      background-color: #FFE66D; /* Amarillo Rigo */
-      box-shadow: 5px 5px 0px #1a1a1a;
+      background-color: #f9f9f9;
+      box-shadow: 4px 4px 0px #1a1a1a;
     }
-
-    .question-block p {
+    .question-block p.instruction {
+      font-weight: bold;
       font-size: 1.1rem;
-      font-weight: 900;
       margin-bottom: 1rem;
     }
-
-    label {
-      display: block;
-      margin: 0.5rem 0;
+    .input-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.8rem;
       font-weight: bold;
-      cursor: pointer;
+      font-size: 1.1rem;
+      flex-wrap: wrap;
     }
+    .input-row span { margin-right: 10px; min-width: 120px; }
 
-    input[type="radio"] {
-      margin-right: 10px;
-      accent-color: #1a1a1a;
+    /* Cards de clasificación de alimentos (Part I) */
+    .food-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.2rem;
     }
-
+    .food-card {
+      border: 3px solid #1a1a1a;
+      background-color: #ffffff;
+      box-shadow: 4px 4px 0px #1a1a1a;
+      padding: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .food-card .food-img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border: 2px solid #1a1a1a;
+      margin-bottom: 0.6rem;
+      background-color: #f0f0f0;
+    }
+    .food-card .food-name {
+      font-weight: bold;
+      font-size: 1rem;
+      margin-bottom: 0.6rem;
+    }
+    .food-card select { width: 100%; }
+    
+    select, input[type="text"], input[type="number"], textarea {
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 8px;
+      border: 3px solid #1a1a1a;
+      background-color: #FFE66D;
+      outline: none;
+      box-shadow: 3px 3px 0px #1a1a1a;
+      transition: transform 0.1s;
+    }
+    select:focus, input:focus, textarea:focus {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px #1a1a1a;
+      background-color: #A8E6CF;
+    }
+    input[type="number"] { width: 60px; text-align: center; }
+    textarea { width: 100%; min-height: 150px; resize: vertical; margin-top: 10px;}
+    
     .brutal-btn {
       display: block;
       width: 100%;
-      padding: 1rem;
+      padding: 1.2rem;
       font-family: 'Arial Black', sans-serif;
       font-size: 1.3rem;
       text-transform: uppercase;
@@ -85,126 +159,1209 @@
       background-color: #1a1a1a;
       border: 4px solid #1a1a1a;
       cursor: pointer;
-      box-shadow: 5px 5px 0px #FF6B9D;
+      box-shadow: 6px 6px 0px #FF6B9D;
       margin-top: 2rem;
+      transition: all 0.1s;
     }
     .brutal-btn:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 7px 7px 0px #A8E6CF;
+      transform: translate(-3px, -3px);
+      box-shadow: 9px 9px 0px #A8E6CF;
     }
-
-    /* Resultado final */
-    #result-box {
-      margin-top: 1.5rem;
-      padding: 1rem;
-      border: 3px solid #1a1a1a;
+    .btn-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .btn-row .brutal-btn {
+      flex: 1 1 220px;
+      margin-top: 0;
+    }
+    .brutal-btn.brutal-btn-alt {
+      background-color: #FF6B9D;
+      box-shadow: 6px 6px 0px #1a1a1a;
+    }
+    .brutal-btn.brutal-btn-alt:hover {
+      box-shadow: 9px 9px 0px #1a1a1a;
+    }
+    .result-box {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      border: 4px solid #1a1a1a;
       display: none;
       font-weight: bold;
       font-size: 1.2rem;
       text-align: center;
+      box-shadow: 6px 6px 0px #1a1a1a;
+      background-color: #ffffff;
     }
+
+    /* CONTENEDOR PARA GENERAR EL PDF
+       IMPORTANTE: html2canvas necesita capturar el elemento realmente
+       renderizado y visible. Por eso permanece oculto con display:none
+       (no ocupa espacio, no se ve, no interfiere con la página) y solo se
+       muestra un instante -tapado por la pantalla de carga de abajo-
+       mientras se genera el PDF. */
+    #pdf-wrapper {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      /* Ancho calculado para que SIEMPRE quepa dentro del área imprimible:
+         página Carta = 8.5in (816px a 96dpi). Con márgenes de 0.4in a cada
+         lado (0.8in = 76.8px), el ancho útil real es de ~739px. Usamos
+         730px para dejar un margen de seguridad y que html2pdf nunca
+         tenga que recortar ni forzar un escalado raro. */
+      width: 730px;
+      background-color: #ffffff;
+      z-index: 999998;
+    }
+    /* Pantalla de carga que cubre TODO mientras se genera el PDF, para que
+       el usuario nunca vea el contenedor de arriba */
+    #pdf-generating-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background-color: #1a1a1a;
+      color: #FFE66D;
+      z-index: 999999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 2rem;
+    }
+    #pdf-generating-overlay .spinner-emoji {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      animation: spin-pulse 1s infinite ease-in-out;
+    }
+    @keyframes spin-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    #pdf-generating-overlay p {
+      border: none;
+      padding: 0;
+      color: #ffffff;
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+    }
+    #pdf-content {
+      padding: 45px;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #1a1a1a;
+      background-color: #ffffff;
+    }
+    .pdf-header {
+      text-align: center;
+      border-bottom: 4px solid #1a1a1a;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      position: relative;
+    }
+    .pdf-header .pdf-emoji-strip {
+      font-size: 1.4rem;
+      letter-spacing: 6px;
+      margin-bottom: 6px;
+    }
+    .pdf-header h1 {
+      font-family: 'Arial Black', Arial, sans-serif;
+      font-size: 1.9rem;
+      background-color: transparent;
+      box-shadow: none;
+      border: none;
+      transform: none;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+    .pdf-header .pdf-subtitle {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #FF6B9D;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .pdf-student-info {
+      font-size: 1rem;
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      background-color: #FFE66D;
+      border: 2px solid #1a1a1a;
+      padding: 8px 14px;
+      margin-bottom: 22px;
+    }
+    .pdf-section-title {
+      font-family: 'Arial Black', Arial, sans-serif;
+      background-color: #1a1a1a;
+      color: #ffffff;
+      padding: 6px 12px;
+      border: 2px solid #1a1a1a;
+      margin-top: 22px;
+      margin-bottom: 10px;
+      font-size: 1.05rem;
+      text-transform: uppercase;
+    }
+    .pdf-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .pdf-table tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    /* Evita que un título de sección quede "huérfano" al final de una
+       página, separado del contenido que le sigue */
+    .pdf-section-title {
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    /* Fuerza un salto de página antes del elemento que la use */
+    .pdf-page-break-before {
+      page-break-before: always;
+      break-before: always;
+    }
+    .pdf-table th, .pdf-table td {
+      border: 2px solid #1a1a1a;
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .pdf-table th {
+      background-color: #A8E6CF;
+      font-family: 'Arial Black', Arial, sans-serif;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+    .pdf-table tbody tr:nth-child(even) td { background-color: #f7f7f7; }
+    .pdf-list { list-style-type: none; padding-left: 0; }
+    .pdf-list li {
+      margin-bottom: 8px;
+      font-size: 0.98rem;
+      border-bottom: 1px dotted #ccc;
+      padding-bottom: 6px;
+    }
+    .pdf-recipe-box {
+      border: 2px solid #1a1a1a;
+      padding: 16px;
+      background-color: #f9f9f9;
+      min-height: 110px;
+      white-space: pre-wrap;
+      font-size: 1rem;
+      line-height: 1.5;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .pdf-drawing-area {
+      border: 3px dashed #1a1a1a;
+      height: 300px;
+      width: 100%;
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-weight: bold;
+      background-color: #fdfdfd;
+      position: relative;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    /* Elementos guía dentro del área de dibujo: se dejan MUY tenues para
+       que no interfieran visualmente con el dibujo real del estudiante */
+    .pdf-drawing-area .plate-outline {
+      width: 170px;
+      height: 170px;
+      border: 3px dotted #bbb;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      opacity: 0.25;
+    }
+    .pdf-drawing-area .plate-outline span {
+      font-size: 2.4rem;
+      opacity: 0.5;
+    }
+    .pdf-drawing-area .drawing-caption {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      opacity: 0.35;
+    }
+    .pdf-footer {
+      margin-top: 25px;
+      border-top: 3px solid #1a1a1a;
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: #444;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .pdf-rubric-box {
+      margin-top: 4px;
+      border: 2px solid #1a1a1a;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .pdf-rubric-box b { display: block; margin-bottom: 4px; }
+	
+	/* --- MEJORAS FINAL BOSS: PARTE II --- */
+    .part2-grid {
+      display: flex;
+      flex-direction: column; /* Móvil: Imagen arriba, ejercicios abajo */
+      gap: 1.5rem;
+    }
+    .part2-image img {
+      width: 100%;
+      height: 100%;
+      max-height: 250px;
+      object-fit: cover;
+      border: 3px solid #1a1a1a;
+      box-shadow: 4px 4px 0px #1a1a1a;
+      background-color: #f0f0f0;
+    }
+    .part2-exercises {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+	
+	/* --- MEJORAS FINAL BOSS: PARTE III --- */
+    .part3-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .part3-card {
+      border: 3px solid #1a1a1a;
+      background-color: #ffffff;
+      box-shadow: 4px 4px 0px #1a1a1a;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .part3-card .item-name {
+      display: block;
+      width: 100%;
+      font-weight: 900;
+      font-size: 1.2rem;
+      margin-bottom: 1.2rem;
+      background-color: #FFE66D;
+      padding: 8px 10px;
+      border: 2px solid #1a1a1a;
+      box-shadow: 3px 3px 0px #1a1a1a;
+    }
+    .part3-buttons {
+      display: flex;
+      width: 100%;
+      gap: 10px;
+    }
+    /* Ocultamos el radio button original */
+    .part3-buttons input[type="radio"] {
+      display: none;
+    }
+    /* Diseñamos el label como botón */
+    .part3-buttons label {
+      flex: 1;
+      font-family: 'Arial Black', sans-serif;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      padding: 10px 5px;
+      border: 3px solid #1a1a1a;
+      background-color: #f9f9f9;
+      cursor: pointer;
+      transition: all 0.1s;
+      box-shadow: 3px 3px 0px #1a1a1a;
+    }
+    .part3-buttons label:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px #1a1a1a;
+    }
+    /* Estilo Activo: Countable (Verde) */
+    .part3-buttons input[value="C"]:checked + label {
+      background-color: #A8E6CF;
+      color: #1a1a1a;
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px #1a1a1a;
+    }
+    /* Estilo Activo: Uncountable (Rosa) */
+    .part3-buttons input[value="U"]:checked + label {
+      background-color: #FF6B9D;
+      color: #ffffff;
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px #1a1a1a;
+    }
+	
+	/* --- MEJORAS FINAL BOSS: PARTE V (DRAG & DROP) --- */
+    .part5-dnd-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      user-select: none;
+    }
+    .dnd-col {
+      flex: 1;
+      background: #ffffff;
+      border: 4px solid #1a1a1a;
+      box-shadow: 6px 6px 0px #1a1a1a;
+      padding: 1.5rem;
+    }
+    .dnd-col-title {
+      font-family: 'Arial Black', sans-serif;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      text-align: center;
+      background: #A8E6CF;
+      border: 3px solid #1a1a1a;
+      padding: 8px;
+    }
+    .dnd-options-zone {
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .draggable-item {
+      background-color: #FFE66D;
+      border: 3px solid #1a1a1a;
+      padding: 12px;
+      font-weight: 900;
+      cursor: grab;
+      touch-action: none; /* ¡Vital para evitar que la pantalla haga scroll al tocar en móviles! */
+      box-shadow: 3px 3px 0px #1a1a1a;
+      transition: transform 0.1s;
+      display: flex;
+      align-items: center;
+    }
+    .draggable-item:active { cursor: grabbing; }
+    .draggable-item.dragging {
+      position: fixed; /* Facilita el cálculo matemático de las coordenadas */
+      z-index: 999999;
+      pointer-events: none; /* Permite que el cursor "vea" lo que hay debajo del elemento */
+      opacity: 0.9;
+      box-shadow: 8px 8px 0px #1a1a1a;
+      transform: scale(1.05);
+      margin: 0;
+    }
+    .drop-zone {
+      border: 3px dashed #1a1a1a;
+      background: #f9f9f9;
+      min-height: 60px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      transition: background-color 0.2s;
+    }
+    .drop-zone.drag-over {
+      background-color: #FF6B9D;
+      border-style: solid;
+    }
+    .drop-zone .step-num {
+      font-family: 'Arial Black', sans-serif;
+      font-size: 1.5rem;
+      color: #1a1a1a;
+      margin: 0 15px;
+      width: 25px;
+    }
+    .drop-content {
+      flex: 1;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+    }
+    .drop-content .draggable-item {
+      width: 100%;
+      margin: 0;
+      box-shadow: none;
+      border: 2px solid #1a1a1a;
+    }
+
+    @media (min-width: 768px) {
+      .part5-dnd-container { flex-direction: row; }
+    }
+    
+    @media (min-width: 768px) {
+      body { padding: 2rem; }
+      .quiz-container { padding: 3rem; }
+      h1 { font-size: 3rem; }
+    }
+	
+	/* Agregar dentro del media query existente */
+      .part2-grid {
+        flex-direction: row-reverse; /* Escritorio: Ejercicios izq, Imagen der */
+        align-items: stretch;
+      }
+      .part2-image, .part2-exercises {
+        flex: 1; /* Ambas columnas toman el 50% del ancho */
+      }
+      .part2-image img {
+        max-height: none; /* Quitamos el límite de altura en escritorio */
+      }
   </style>
-  <script src="../../rigo.js"></script>
+  <script src="../rigo.js"></script>
 </head>
 <body>
 
   <div class="quiz-container">
     <div class="welcome-badge" id="student-tag">Cargando estudiante...</div>
     
-    <h1>7th Grade - Basic Diagnostic Quiz</h1>
-    <hr style="border: 2px solid #1a1a1a; margin-bottom: 1.5rem;">
-
-    <form id="quiz-form">
+    <h1>Complete My Recipe 👨‍🍳</h1>
+    <p class="intro">Let's practice the vocabulary of food and the correct use of quantifiers (a, an, some, any) and countable/uncountable nouns.</p>
+    
+    <form id="recovery-form">
+      
+      <!-- PART I -->
+      <div class="part-title">Part I. Food Classification</div>
       <div class="question-block">
-        <p>1. Complete: "She ________ a very smart student."</p>
-        <label><input type="radio" name="q1" value="correct"> is</label>
-        <label><input type="radio" name="q1" value="wrong1"> am</label>
-        <label><input type="radio" name="q1" value="wrong2"> are</label>
+        <p class="instruction">Clasifica los alimentos en su grupo de comida correcto:</p>
+        <div class="food-grid">
+          <div class="food-card">
+            <img class="food-img" src="trimestre2/apple.jpg" alt="Apple">
+            <span class="food-name">1. Apple</span>
+            <select id="p1_1"><option value="">--Select--</option><option value="Fruit">Fruit</option><option value="Vegetables">Vegetables</option><option value="Meat">Meat</option><option value="Dairy">Dairy</option><option value="Grains">Grains</option></select>
+          </div>
+          <div class="food-card">
+            <img class="food-img" src="trimestre2/chicken.jpg" alt="Chicken">
+            <span class="food-name">2. Chicken</span>
+            <select id="p1_2"><option value="">--Select--</option><option value="Fruit">Fruit</option><option value="Vegetables">Vegetables</option><option value="Meat">Meat</option><option value="Dairy">Dairy</option><option value="Grains">Grains</option></select>
+          </div>
+          <div class="food-card">
+            <img class="food-img" src="trimestre2/carrot.jpg" alt="Carrot">
+            <span class="food-name">3. Carrot</span>
+            <select id="p1_3"><option value="">--Select--</option><option value="Fruit">Fruit</option><option value="Vegetables">Vegetables</option><option value="Meat">Meat</option><option value="Dairy">Dairy</option><option value="Grains">Grains</option></select>
+          </div>
+          <div class="food-card">
+            <img class="food-img" src="trimestre2/milk.jpg" alt="Milk">
+            <span class="food-name">4. Milk</span>
+            <select id="p1_4"><option value="">--Select--</option><option value="Fruit">Fruit</option><option value="Vegetables">Vegetables</option><option value="Meat">Meat</option><option value="Dairy">Dairy</option><option value="Grains">Grains</option></select>
+          </div>
+          <div class="food-card">
+            <img class="food-img" src="trimestre2/rice.jpg" alt="Rice">
+            <span class="food-name">5. Rice</span>
+            <select id="p1_5"><option value="">--Select--</option><option value="Fruit">Fruit</option><option value="Vegetables">Vegetables</option><option value="Meat">Meat</option><option value="Dairy">Dairy</option><option value="Grains">Grains</option></select>
+          </div>
+          <div class="food-card">
+            <img class="food-img" src="trimestre2/cheese.jpg" alt="Cheese">
+            <span class="food-name">6. Cheese</span>
+            <select id="p1_6"><option value="">--Select--</option><option value="Fruit">Fruit</option><option value="Vegetables">Vegetables</option><option value="Meat">Meat</option><option value="Dairy">Dairy</option><option value="Grains">Grains</option></select>
+          </div>
+        </div>
       </div>
 
+      <!-- PART II -->
+      <div class="part-title">Part II. Ingredients</div>
       <div class="question-block">
-        <p>2. What is the opposite of "BIG"?</p>
-        <label><input type="radio" name="q2" value="wrong1"> Tall</label>
-        <label><input type="radio" name="q2" value="correct"> Small</label>
-        <label><input type="radio" name="q2" value="wrong2"> Short</label>
+        <p class="instruction">Escribe el quantifier correcto (a, an, some, any):</p>
+        
+        <div class="part2-grid">
+          <!-- Columna Imagen: Primero en HTML para asegurar que esté arriba en móvil -->
+          <div class="part2-image">
+            <img src="trimestre2/alimentos.webp" alt="Food ingredients">
+          </div>
+          
+          <!-- Columna Ejercicios -->
+          <div class="part2-exercises">
+            <div class="input-row">1. <input type="text" id="p2_1" style="width: 80px; margin: 0 10px;"> chicken</div>
+            <div class="input-row">2. <input type="text" id="p2_2" style="width: 80px; margin: 0 10px;"> onion</div>
+            <div class="input-row">3. <input type="text" id="p2_3" style="width: 80px; margin: 0 10px;"> rice</div>
+            <div class="input-row">4. <input type="text" id="p2_4" style="width: 80px; margin: 0 10px;"> salt</div>
+            <div class="input-row">5. <input type="text" id="p2_5" style="width: 80px; margin: 0 10px;"> tomato</div>
+            <div class="input-row">6. <input type="text" id="p2_6" style="width: 80px; margin: 0 10px;"> carrots</div>
+          </div>
+        </div>
       </div>
 
+      <!-- PART III -->
+      <div class="part-title">Part III. Countable or Uncountable</div>
       <div class="question-block">
-        <p>3. Select the correct color for a banana:</p>
-        <label><input type="radio" name="q3" value="wrong1"> Blue</label>
-        <label><input type="radio" name="q3" value="wrong2"> Red</label>
-        <label><input type="radio" name="q3" value="correct"> Yellow</label>
+        <p class="instruction">Selecciona 'Countable' o 'Uncountable' para cada ingrediente:</p>
+        
+        <div class="part3-grid">
+          
+          <!-- Item 1 -->
+          <div class="part3-card">
+            <span class="item-name">1. Rice</span>
+            <div class="part3-buttons">
+              <input type="radio" id="p3_1_c" name="p3_1_radio" value="C" onchange="document.getElementById('p3_1').value = this.value">
+              <label for="p3_1_c">Countable</label>
+              <input type="radio" id="p3_1_u" name="p3_1_radio" value="U" onchange="document.getElementById('p3_1').value = this.value">
+              <label for="p3_1_u">Uncountable</label>
+            </div>
+            <input type="hidden" id="p3_1" value="">
+          </div>
+
+          <!-- Item 2 -->
+          <div class="part3-card">
+            <span class="item-name">2. Onion</span>
+            <div class="part3-buttons">
+              <input type="radio" id="p3_2_c" name="p3_2_radio" value="C" onchange="document.getElementById('p3_2').value = this.value">
+              <label for="p3_2_c">Countable</label>
+              <input type="radio" id="p3_2_u" name="p3_2_radio" value="U" onchange="document.getElementById('p3_2').value = this.value">
+              <label for="p3_2_u">Uncountable</label>
+            </div>
+            <input type="hidden" id="p3_2" value="">
+          </div>
+
+          <!-- Item 3 -->
+          <div class="part3-card">
+            <span class="item-name">3. Tomato</span>
+            <div class="part3-buttons">
+              <input type="radio" id="p3_3_c" name="p3_3_radio" value="C" onchange="document.getElementById('p3_3').value = this.value">
+              <label for="p3_3_c">Countable</label>
+              <input type="radio" id="p3_3_u" name="p3_3_radio" value="U" onchange="document.getElementById('p3_3').value = this.value">
+              <label for="p3_3_u">Uncountable</label>
+            </div>
+            <input type="hidden" id="p3_3" value="">
+          </div>
+
+          <!-- Item 4 -->
+          <div class="part3-card">
+            <span class="item-name">4. Salt</span>
+            <div class="part3-buttons">
+              <input type="radio" id="p3_4_c" name="p3_4_radio" value="C" onchange="document.getElementById('p3_4').value = this.value">
+              <label for="p3_4_c">Countable</label>
+              <input type="radio" id="p3_4_u" name="p3_4_radio" value="U" onchange="document.getElementById('p3_4').value = this.value">
+              <label for="p3_4_u">Uncountable</label>
+            </div>
+            <input type="hidden" id="p3_4" value="">
+          </div>
+
+          <!-- Item 5 -->
+          <div class="part3-card">
+            <span class="item-name">5. Egg</span>
+            <div class="part3-buttons">
+              <input type="radio" id="p3_5_c" name="p3_5_radio" value="C" onchange="document.getElementById('p3_5').value = this.value">
+              <label for="p3_5_c">Countable</label>
+              <input type="radio" id="p3_5_u" name="p3_5_radio" value="U" onchange="document.getElementById('p3_5').value = this.value">
+              <label for="p3_5_u">Uncountable</label>
+            </div>
+            <input type="hidden" id="p3_5" value="">
+          </div>
+
+          <!-- Item 6 -->
+          <div class="part3-card">
+            <span class="item-name">6. Water</span>
+            <div class="part3-buttons">
+              <input type="radio" id="p3_6_c" name="p3_6_radio" value="C" onchange="document.getElementById('p3_6').value = this.value">
+              <label for="p3_6_c">Countable</label>
+              <input type="radio" id="p3_6_u" name="p3_6_radio" value="U" onchange="document.getElementById('p3_6').value = this.value">
+              <label for="p3_6_u">Uncountable</label>
+            </div>
+            <input type="hidden" id="p3_6" value="">
+          </div>
+
+        </div>
       </div>
 
-      <button type="button" class="brutal-btn" id="submit-btn">Terminar Examen</button>
+      <!-- PART IV -->
+      <div class="part-title">Part IV. Complete the sentences</div>
+      <div class="question-block">
+        <p class="instruction">Completa usando a, an, some, o any:</p>
+        <div class="input-row">1. I need <input type="text" id="p4_1" style="width: 80px; margin: 0 10px;"> onion.</div>
+        <div class="input-row">2. There is <input type="text" id="p4_2" style="width: 80px; margin: 0 10px;"> avocado.</div>
+        <div class="input-row">3. We have <input type="text" id="p4_3" style="width: 80px; margin: 0 10px;"> rice.</div>
+        <div class="input-row">4. We don't have <input type="text" id="p4_4" style="width: 80px; margin: 0 10px;"> milk.</div>
+        <div class="input-row">5. Do you have <input type="text" id="p4_5" style="width: 80px; margin: 0 10px;"> eggs?</div>
+        <div class="input-row">6. There is <input type="text" id="p4_6" style="width: 80px; margin: 0 10px;"> hour left to cook.</div>
+      </div>
+
+      <!-- PART V -->
+      <div class="part-title">Part V. The process</div>
+      <div class="question-block" style="padding: 1.5rem; background-color: transparent; border: none; box-shadow: none;">
+        <p class="instruction" style="text-align: center; margin-bottom: 1.5rem;">Arrastra y suelta los pasos para ordenarlos del 1 al 6:</p>
+        
+        <div class="part5-dnd-container">
+          
+          <!-- Columna 1: Opciones Disponibles -->
+          <div class="dnd-col">
+            <div class="dnd-col-title">Available Steps</div>
+            <div class="dnd-options-zone" id="dnd-options-zone">
+              <div class="draggable-item" data-step="1">Wash the vegetables.</div>
+              <div class="draggable-item" data-step="2">Put the water in a pot.</div>
+              <div class="draggable-item" data-step="3">Cut the chicken.</div>
+              <div class="draggable-item" data-step="4">Add the onion.</div>
+              <div class="draggable-item" data-step="5">Add the rice.</div>
+              <div class="draggable-item" data-step="6">Cook for 30 minutes.</div>
+            </div>
+          </div>
+
+          <!-- Columna 2: Orden Correcto (Placeholders) -->
+          <div class="dnd-col">
+            <div class="dnd-col-title">Correct Order</div>
+            <div class="dnd-target-zone">
+              <div class="drop-zone" data-pos="1"><span class="step-num">1.</span><div class="drop-content"></div></div>
+              <div class="drop-zone" data-pos="2"><span class="step-num">2.</span><div class="drop-content"></div></div>
+              <div class="drop-zone" data-pos="3"><span class="step-num">3.</span><div class="drop-content"></div></div>
+              <div class="drop-zone" data-pos="4"><span class="step-num">4.</span><div class="drop-content"></div></div>
+              <div class="drop-zone" data-pos="5"><span class="step-num">5.</span><div class="drop-content"></div></div>
+              <div class="drop-zone" data-pos="6"><span class="step-num">6.</span><div class="drop-content"></div></div>
+            </div>
+          </div>
+
+        </div>
+        
+        <!-- Inputs ocultos para mantener la compatibilidad con el generador de PDF -->
+        <input type="hidden" id="p5_1" value="">
+        <input type="hidden" id="p5_2" value="">
+        <input type="hidden" id="p5_3" value="">
+        <input type="hidden" id="p5_4" value="">
+        <input type="hidden" id="p5_5" value="">
+        <input type="hidden" id="p5_6" value="">
+      </div>
+
+      <!-- PART VI -->
+      <div class="part-title">Part VI. My Recipe</div>
+      <div class="question-block" style="background-color: #A8E6CF;">
+        <p class="instruction">Escribe unsa receta simple siguiendo el modelo.</p>
+        <p style="font-size: 0.95rem;"><b>Must contain:</b><br>
+        ✔ Nombre del plato.<br>
+        ✔ 5 ingredientes usando a, an, some, o any correctamente.<br>
+        ✔ 5 pasos usando verbos como: <i>Cut, Wash, Add, Put, Mix, Cook, Serve</i>.</p>
+        <textarea id="p6_textarea" placeholder="Example: My dish is Chicken Soup. I need some chicken..."></textarea>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="brutal-btn" id="generate-pdf-btn">⬇️ DESCARGAR PDF</button>
+        <button type="button" class="brutal-btn brutal-btn-alt" id="open-pdf-btn">📄 ABRIR PDF (iPhone)</button>
+      </div>
     </form>
-
+    
     <div id="result-box"></div>
   </div>
 
-  <rigo-mascot id="rigo-companion" grade="Séptimo"></rigo-mascot>
+  <!-- Pantalla de carga que tapa el contenedor del PDF mientras se genera -->
+  <div id="pdf-generating-overlay">
+    <div class="spinner-emoji">🍲</div>
+    <p>Generando tu PDF...<br>No cierres esta ventana</p>
+  </div>
+
+  <!-- Contenedor oculto para la estructura del PDF -->
+  <div id="pdf-wrapper">
+    <div id="pdf-content">
+      <div class="pdf-header">
+        <div class="pdf-emoji-strip">🥕 🍲 🥗</div>
+        <h1>RECOVERY ACTIVITY: COMPLETE MY RECIPE</h1>
+        <div class="pdf-subtitle">English Class · 9th Grade · Teacher Eliseo</div>
+      </div>
+      <div class="pdf-student-info">
+        <span>👤 Student: <span id="pdf-out-name"></span></span>
+        <span>🪪 NIE: <span id="pdf-out-nie"></span></span>
+        <span>📅 Date: <span id="pdf-out-date"></span></span>
+      </div>
+
+      <!-- Tabla para Parte I, II y III (Ahorra espacio) -->
+      <table class="pdf-table">
+        <thead>
+          <tr>
+            <th>Part I. Food Group</th>
+            <th>Part II. Quantifiers</th>
+            <th>Part III. Countable / Uncountable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1. Apple: <b id="out_p1_1"></b></td>
+            <td>1. <b id="out_p2_1"></b> chicken</td>
+            <td>1. Rice: <b id="out_p3_1"></b></td>
+          </tr>
+          <tr>
+            <td>2. Chicken: <b id="out_p1_2"></b></td>
+            <td>2. <b id="out_p2_2"></b> onion</td>
+            <td>2. Onion: <b id="out_p3_2"></b></td>
+          </tr>
+          <tr>
+            <td>3. Carrot: <b id="out_p1_3"></b></td>
+            <td>3. <b id="out_p2_3"></b> rice</td>
+            <td>3. Tomato: <b id="out_p3_3"></b></td>
+          </tr>
+          <tr>
+            <td>4. Milk: <b id="out_p1_4"></b></td>
+            <td>4. <b id="out_p2_4"></b> salt</td>
+            <td>4. Salt: <b id="out_p3_4"></b></td>
+          </tr>
+          <tr>
+            <td>5. Rice: <b id="out_p1_5"></b></td>
+            <td>5. <b id="out_p2_5"></b> tomato</td>
+            <td>5. Egg: <b id="out_p3_5"></b></td>
+          </tr>
+          <tr>
+            <td>6. Cheese: <b id="out_p1_6"></b></td>
+            <td>6. <b id="out_p2_6"></b> carrots</td>
+            <td>6. Water: <b id="out_p3_6"></b></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Parte IV y V -->
+      <table class="pdf-table" style="margin-top: 20px;">
+        <thead>
+          <tr>
+            <th style="width: 50%;">Part IV. Sentences (a, an, some, any)</th>
+            <th style="width: 50%;">Part V. The Process (Order)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">
+              <ul class="pdf-list">
+                <li>1. I need <b><span id="out_p4_1"></span></b> onion.</li>
+                <li>2. There is <b><span id="out_p4_2"></span></b> avocado.</li>
+                <li>3. We have <b><span id="out_p4_3"></span></b> rice.</li>
+                <li>4. We don't have <b><span id="out_p4_4"></span></b> milk.</li>
+                <li>5. Do you have <b><span id="out_p4_5"></span></b> eggs?</li>
+                <li>6. There is <b><span id="out_p4_6"></span></b> hour left to cook.</li>
+              </ul>
+            </td>
+            <td style="vertical-align: top;">
+              <ul class="pdf-list">
+                <li>( <b id="out_p5_1"></b> ) Add the onion.</li>
+                <li>( <b id="out_p5_2"></b> ) Wash the vegetables.</li>
+                <li>( <b id="out_p5_3"></b> ) Put the water in a pot.</li>
+                <li>( <b id="out_p5_4"></b> ) Cut the chicken.</li>
+                <li>( <b id="out_p5_5"></b> ) Add the rice.</li>
+                <li>( <b id="out_p5_6"></b> ) Cook for 30 minutes.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Parte VI: se fuerza a que empiece en una página nueva para que
+           nunca aparezca cortada entre dos páginas -->
+      <div class="pdf-section-title pdf-page-break-before">Part VI. My Recipe</div>
+      <div class="pdf-recipe-box" id="out_p6"></div>
+
+      <!-- Espacio para dibujo -->
+      <div class="pdf-section-title" style="text-align: center; margin-top: 28px;">
+        🎨 My Dish Illustration
+      </div>
+      <div class="pdf-drawing-area">
+        <div class="plate-outline"><span>🍽️</span></div>
+        <div class="drawing-caption">Draw your delicious dish here!</div>
+      </div>
+
+      <div class="pdf-footer">
+        <span>Recovery Worksheet · English Ecosystem 2026</span>
+        <span>Signature: _______________________</span>
+      </div>
+      <div class="pdf-rubric-box">
+        <b>* This worksheet will be evaluated by the teacher using the official rubric.</b>
+        Print this page, complete the drawing, and glue it into your notebook.
+      </div>
+    </div>
+  </div>
+
+  <rigo-mascot id="rigo-companion" grade="Noveno"></rigo-mascot>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const rigo = document.getElementById('rigo-companion');
+
+      // Helper: llama métodos de Rigo de forma segura. Si el script de Rigo
+      // no cargó (ruta rota, sin internet, etc.) o el método no existe,
+      // simplemente lo ignora en vez de romper el resto del flujo (por
+      // ejemplo, la generación del PDF).
+      function safeRigo(callback) {
+        try {
+          if (rigo && typeof callback === 'function') callback(rigo);
+        } catch (e) {
+          console.warn('Rigo no disponible en este momento:', e);
+        }
+      }
       const studentTag = document.getElementById('student-tag');
       
-      // Leer datos desde la URL creados por el index
       const urlParams = new URLSearchParams(window.location.search);
-      const studentName = urlParams.get('student') || "Estudiante de 7°";
+      const studentName = urlParams.get('student') || "Estudiante de 9°";
       const nie = urlParams.get('nie') || "";
 
       studentTag.textContent = `👤 Alumno: ${studentName} (NIE: ${nie})`;
+      
+      // Asignar nombres al PDF
+      document.getElementById('pdf-out-name').textContent = studentName;
+      document.getElementById('pdf-out-nie').textContent = nie;
+      document.getElementById('pdf-out-date').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-      // Saludo personalizado de Rigo al entrar al examen
       setTimeout(() => {
-        if (rigo) {
-          rigo.setEmotion('happy');
-          rigo.say(`¡Tú puedes, ${studentName.split(' ')[1] || "Julián"}! Lee con cuidado.`, 4000);
-        }
+        safeRigo((r) => {
+          r.setEmotion('excited');
+          r.say(`¡Llena todos los campos, ${studentName.split(' ')[0]}! Luego descarga tu PDF para pegarlo en tu cuaderno.`, 6000);
+        });
       }, 1000);
 
-      // Calificar actividad e interactuar con Rigo
-      document.getElementById('submit-btn').addEventListener('click', () => {
-        const form = document.getElementById('quiz-form');
-        const q1 = form.q1.value;
-        const q2 = form.q2.value;
-        const q3 = form.q3.value;
+      // Función compartida que recolecta los datos del formulario, genera
+      // el PDF y lo entrega en modo "save" (descarga directa) o "open"
+      // (lo abre en una pestaña nueva). El modo "open" es el recomendado
+      // en iPhone/iPad, donde Safari a veces bloquea la descarga directa
+      // pero sí permite ver el PDF en el navegador; desde ahí el usuario
+      // tiene su propio botón de compartir/descargar.
+      function generatePdf(mode, pdfWindow) {
+        const genBtn = document.getElementById('generate-pdf-btn');
+        const openBtn = document.getElementById('open-pdf-btn');
+        const resultBox = document.getElementById('result-box');
 
-        if (!q1 || !q2 || !q3) {
-          if (rigo) {
-            rigo.setEmotion('confused');
-            rigo.say("¡Hey! Responde todas las preguntas antes de terminar.", 3500);
-          }
+        if (typeof html2pdf === 'undefined') {
+          resultBox.style.display = "block";
+          resultBox.style.backgroundColor = "#FF6B9D";
+          resultBox.style.color = "#ffffff";
+          resultBox.innerHTML = `⚠️ No se pudo cargar la librería de PDF (revisa tu conexión a internet) y recarga la página.`;
+          if (pdfWindow) pdfWindow.close();
           return;
         }
 
-        let score = 0;
-        if (q1 === 'correct') score++;
-        if (q2 === 'correct') score++;
-        if (q3 === 'correct') score++;
+        // 1. Recolectar datos del formulario y pasarlos al contenedor del PDF
+        const getVal = (id) => document.getElementById(id).value.trim() || "_____";
 
-        const resultBox = document.getElementById('result-box');
-        resultBox.style.display = "block";
+        // Part 1
+        document.getElementById('out_p1_1').textContent = getVal('p1_1');
+        document.getElementById('out_p1_2').textContent = getVal('p1_2');
+        document.getElementById('out_p1_3').textContent = getVal('p1_3');
+        document.getElementById('out_p1_4').textContent = getVal('p1_4');
+        document.getElementById('out_p1_5').textContent = getVal('p1_5');
+        document.getElementById('out_p1_6').textContent = getVal('p1_6');
 
-        if (score === 3) {
-          resultBox.style.backgroundColor = "#A8E6CF";
-          resultBox.textContent = "¡Nota: 10/10! Excelente trabajo.";
-          if (rigo) rigo.cheer(); // Animación feliz/emocionada de Rigo
-        } else if (score >= 1) {
-          resultBox.style.backgroundColor = "#FFE66D";
-          resultBox.textContent = `Nota: ${((score/3)*10).toFixed(1)}/10. Puedes hacerlo mejor.`;
-          if (rigo) {
-            rigo.setEmotion('neutral');
-            rigo.say("Pasaste, pero hay que repasar más.", 3000);
-          }
+        // Part 2
+        document.getElementById('out_p2_1').textContent = getVal('p2_1');
+        document.getElementById('out_p2_2').textContent = getVal('p2_2');
+        document.getElementById('out_p2_3').textContent = getVal('p2_3');
+        document.getElementById('out_p2_4').textContent = getVal('p2_4');
+        document.getElementById('out_p2_5').textContent = getVal('p2_5');
+        document.getElementById('out_p2_6').textContent = getVal('p2_6');
+
+        // Part 3
+        document.getElementById('out_p3_1').textContent = getVal('p3_1');
+        document.getElementById('out_p3_2').textContent = getVal('p3_2');
+        document.getElementById('out_p3_3').textContent = getVal('p3_3');
+        document.getElementById('out_p3_4').textContent = getVal('p3_4');
+        document.getElementById('out_p3_5').textContent = getVal('p3_5');
+        document.getElementById('out_p3_6').textContent = getVal('p3_6');
+
+        // Part 4
+        document.getElementById('out_p4_1').textContent = getVal('p4_1');
+        document.getElementById('out_p4_2').textContent = getVal('p4_2');
+        document.getElementById('out_p4_3').textContent = getVal('p4_3');
+        document.getElementById('out_p4_4').textContent = getVal('p4_4');
+        document.getElementById('out_p4_5').textContent = getVal('p4_5');
+        document.getElementById('out_p4_6').textContent = getVal('p4_6');
+
+        // Part 5
+        document.getElementById('out_p5_1').textContent = getVal('p5_1');
+        document.getElementById('out_p5_2').textContent = getVal('p5_2');
+        document.getElementById('out_p5_3').textContent = getVal('p5_3');
+        document.getElementById('out_p5_4').textContent = getVal('p5_4');
+        document.getElementById('out_p5_5').textContent = getVal('p5_5');
+        document.getElementById('out_p5_6').textContent = getVal('p5_6');
+
+        // Part 6
+        document.getElementById('out_p6').textContent = document.getElementById('p6_textarea').value || "No recipe provided.";
+
+        // 2. Configurar y generar PDF
+        const wrapper = document.getElementById('pdf-wrapper');
+        const overlay = document.getElementById('pdf-generating-overlay');
+        const element = document.getElementById('pdf-content');
+
+        const opt = {
+          margin:       0.4,
+          filename:     `Recovery_9th_${studentName.replace(/\s+/g, '_')}.pdf`,
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+            windowWidth: 730,   // debe coincidir con el ancho fijo de #pdf-wrapper
+            scrollX: 0,
+            scrollY: 0,
+            x: 0,
+            y: 0
+          },
+          jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+          pagebreak:    { mode: ['css', 'legacy'] }
+        };
+
+        // Cambiar botones a estado de carga (deshabilitamos ambos para
+        // evitar que se disparen dos generaciones al mismo tiempo)
+        const loadingLabel = mode === 'open' ? "ABRIENDO PDF..." : "GENERANDO PDF...";
+        genBtn.disabled = true;
+        openBtn.disabled = true;
+        if (mode === 'open') {
+          openBtn.textContent = loadingLabel;
+          openBtn.style.backgroundColor = "#1a1a1a";
         } else {
-          resultBox.style.backgroundColor = "#FF6B9D";
-          resultBox.textContent = "Nota: 0/10. Inténtalo de nuevo.";
-          if (rigo) rigo.comfort(); // Animación triste/consuelo de Rigo
+          genBtn.textContent = loadingLabel;
+          genBtn.style.backgroundColor = "#FF6B9D";
         }
+
+        function resetButtons() {
+          genBtn.textContent = "⬇️ DESCARGAR PDF";
+          genBtn.style.backgroundColor = "#1a1a1a";
+          genBtn.disabled = false;
+          openBtn.textContent = "📄 ABRIR PDF (iPhone)";
+          openBtn.style.backgroundColor = "#FF6B9D";
+          openBtn.disabled = false;
+        }
+
+        // Guardamos la posición de scroll actual (los botones suelen estar
+        // al final del formulario) y regresamos al inicio de la página
+        // ANTES de capturar, porque un scroll distinto de 0 hace que
+        // html2canvas calcule mal el recorte y corte el contenido del PDF.
+        const previousScrollY = window.scrollY;
+        window.scrollTo(0, 0);
+
+        // Mostramos el contenedor REAL en pantalla (necesario para que
+        // html2canvas lo capture correctamente) pero tapado por completo
+        // por la pantalla de carga de arriba, así el estudiante nunca lo ve.
+        overlay.style.display = 'flex';
+        wrapper.style.display = 'block';
+
+        // Pequeño delay para asegurar que el navegador termine de pintar
+        // el contenido antes de capturarlo.
+        setTimeout(() => {
+          const worker = html2pdf().set(opt).from(element);
+
+          const finishUp = () => {
+            wrapper.style.display = 'none';
+            overlay.style.display = 'none';
+            window.scrollTo(0, previousScrollY);
+            resetButtons();
+          };
+
+          if (mode === 'open') {
+            // Generamos el PDF como blob y lo mostramos en la pestaña que
+            // ya abrimos de forma síncrona al hacer clic (necesario en
+            // iOS/Safari: si abrimos la pestaña después de esperar al PDF,
+            // el navegador la bloquea como pop-up).
+            worker.output('bloburl')
+              .then((url) => {
+                finishUp();
+                if (pdfWindow && !pdfWindow.closed) {
+                  pdfWindow.location.href = url;
+                  resultBox.style.display = "block";
+                  resultBox.style.backgroundColor = "#A8E6CF";
+                  resultBox.innerHTML = `¡PDF listo, se abrió en una pestaña nueva! 📄<br><br><b>En iPhone:</b> toca el ícono de compartir/descarga dentro del visor de PDF para guardarlo. Luego imprímelo, dibuja tu platillo y pégalo en tu cuaderno.`;
+                } else {
+                  // El navegador bloqueó la ventana emergente
+                  resultBox.style.display = "block";
+                  resultBox.style.backgroundColor = "#FF6B9D";
+                  resultBox.style.color = "#ffffff";
+                  resultBox.innerHTML = `⚠️ Tu navegador bloqueó la pestaña nueva. Permite ventanas emergentes para este sitio e inténtalo de nuevo, o usa el botón "DESCARGAR PDF".`;
+                }
+                safeRigo((r) => {
+                  r.setEmotion('happy');
+                  r.say("¡Listo! Ábrelo, guárdalo o compártelo desde ahí.", 5000);
+                });
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+              })
+              .catch((err) => {
+                finishUp();
+                if (pdfWindow && !pdfWindow.closed) pdfWindow.close();
+                resultBox.style.display = "block";
+                resultBox.style.backgroundColor = "#FF6B9D";
+                resultBox.style.color = "#ffffff";
+                resultBox.innerHTML = `⚠️ No se pudo abrir el PDF. Intenta de nuevo o usa el botón "DESCARGAR PDF".<br><small>${err && err.message ? err.message : ''}</small>`;
+                safeRigo((r) => {
+                  r.setEmotion('confused');
+                  r.say("Uy, algo falló abriendo el PDF. ¡Inténtalo otra vez!", 4000);
+                });
+                console.error('Error abriendo PDF:', err);
+              });
+          } else {
+            worker.save()
+              .then(() => {
+                finishUp();
+                resultBox.style.display = "block";
+                resultBox.style.backgroundColor = "#A8E6CF";
+                resultBox.innerHTML = `¡PDF generado con éxito! 🖨️<br><br><b>Instrucciones:</b><br>1. Imprime el documento.<br>2. Dibuja tu platillo en el espacio indicado.<br>3. Pega la hoja en tu cuaderno para que Teacher Eliseo aplique la rúbrica.<br><br><small>¿No se descargó? En iPhone prueba el botón "ABRIR PDF (iPhone)".</small>`;
+
+                safeRigo((r) => {
+                  r.setEmotion('happy');
+                  r.say("¡Excelente! Ahora solo dibuja, imprime y pega en tu cuaderno.", 5000);
+                });
+
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+              })
+              .catch((err) => {
+                finishUp();
+                resultBox.style.display = "block";
+                resultBox.style.backgroundColor = "#FF6B9D";
+                resultBox.style.color = "#ffffff";
+                resultBox.innerHTML = `⚠️ No se pudo generar el PDF. Intenta de nuevo, usa el botón "ABRIR PDF (iPhone)", o usa la opción "Imprimir" del navegador.<br><small>${err && err.message ? err.message : ''}</small>`;
+
+                safeRigo((r) => {
+                  r.setEmotion('confused');
+                  r.say("Uy, algo falló generando el PDF. ¡Inténtalo otra vez!", 4000);
+                });
+                console.error('Error generando PDF:', err);
+              });
+          }
+        }, 150);
+      }
+
+      document.getElementById('generate-pdf-btn').addEventListener('click', () => {
+        generatePdf('save');
+      });
+
+      document.getElementById('open-pdf-btn').addEventListener('click', () => {
+        // CRÍTICO para iOS/Safari: la pestaña debe abrirse de forma
+        // síncrona, en el mismo instante del toque del usuario. Si se abre
+        // más tarde (por ejemplo dentro de una promesa), el navegador la
+        // trata como pop-up no solicitado y la bloquea.
+        const pdfWindow = window.open('', '_blank');
+        generatePdf('open', pdfWindow);
       });
     });
   </script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // VARIABLES PARA DRAG & DROP
+      const draggables = document.querySelectorAll('.draggable-item');
+      const optionsZone = document.getElementById('dnd-options-zone');
+      let draggedEl = null, cloneEl = null;
+      let startX = 0, startY = 0;
+      let scrollDirection = 0; // -1 arriba, 1 abajo, 0 quieto
+
+      // INICIAR EVENTOS
+      draggables.forEach(item => {
+        item.addEventListener('pointerdown', startDrag);
+      });
+
+      function startDrag(e) {
+        if (e.button !== 0 && e.type.includes('mouse')) return; // Solo click izquierdo
+        e.preventDefault();
+
+        draggedEl = e.target;
+        const rect = draggedEl.getBoundingClientRect();
+        
+        // Coordenadas relativas al elemento
+        startX = e.clientX - rect.left;
+        startY = e.clientY - rect.top;
+
+        // Crear clon visual
+        cloneEl = draggedEl.cloneNode(true);
+        cloneEl.classList.add('dragging');
+        cloneEl.style.width = `${rect.width}px`; // Mantener tamaño original
+        document.body.appendChild(cloneEl);
+
+        draggedEl.style.opacity = '0.3'; // Atenuar original
+
+        moveClone(e.clientX, e.clientY);
+
+        document.addEventListener('pointermove', onDrag);
+        document.addEventListener('pointerup', endDrag);
+      }
+
+      function moveClone(x, y) {
+        if (!cloneEl) return;
+        cloneEl.style.left = `${x - startX}px`;
+        cloneEl.style.top = `${y - startY}px`;
+      }
+
+      function onDrag(e) {
+        moveClone(e.clientX, e.clientY);
+        handleAutoScroll(e.clientY);
+
+        // Detectar si estamos sobre una zona de caída válida
+        document.querySelectorAll('.drop-zone, #dnd-options-zone').forEach(z => z.classList.remove('drag-over'));
+        const elementBelow = document.elementFromPoint(e.clientX, e.clientY);
+        if (!elementBelow) return;
+
+        const dropContent = elementBelow.closest('.drop-content');
+        const optZone = elementBelow.closest('#dnd-options-zone');
+
+        if (dropContent) dropContent.parentElement.classList.add('drag-over');
+        else if (optZone) optZone.classList.add('drag-over');
+      }
+
+      // LÓGICA DE AUTOSCROLL A ~70px DEL BORDE
+      function scrollLoop() {
+        if (scrollDirection !== 0) {
+          window.scrollBy(0, scrollDirection * 8); // Velocidad
+          requestAnimationFrame(scrollLoop);
+        }
+      }
+
+      function handleAutoScroll(y) {
+        const threshold = 70;
+        if (y < threshold) {
+          if (scrollDirection !== -1) { scrollDirection = -1; scrollLoop(); }
+        } else if (y > window.innerHeight - threshold) {
+          if (scrollDirection !== 1) { scrollDirection = 1; scrollLoop(); }
+        } else {
+          scrollDirection = 0;
+        }
+      }
+
+      function endDrag(e) {
+        document.removeEventListener('pointermove', onDrag);
+        document.removeEventListener('pointerup', endDrag);
+        scrollDirection = 0; // Detener scroll
+
+        if (!cloneEl || !draggedEl) return;
+
+        document.querySelectorAll('.drop-zone, #dnd-options-zone').forEach(z => z.classList.remove('drag-over'));
+        const elementBelow = document.elementFromPoint(e.clientX, e.clientY);
+
+        if (elementBelow) {
+          const dropContent = elementBelow.closest('.drop-content');
+          const optZone = elementBelow.closest('#dnd-options-zone');
+
+          if (dropContent) {
+            // Si el hueco está ocupado, devolvemos el item existente a la columna de opciones
+            if (dropContent.children.length > 0) {
+              optionsZone.appendChild(dropContent.children[0]);
+            }
+            dropContent.appendChild(draggedEl);
+          } else if (optZone) {
+            optionsZone.appendChild(draggedEl);
+          }
+        }
+
+        // Restaurar estado original y mapear inputs
+        draggedEl.style.opacity = '1';
+        cloneEl.remove();
+        cloneEl = null;
+        draggedEl = null;
+
+        updateHiddenInputs();
+      }
+
+      function updateHiddenInputs() {
+        // Limpiamos los 6 inputs
+        for (let i = 1; i <= 6; i++) {
+          document.getElementById(`p5_${i}`).value = '';
+        }
+
+        // Rellenamos basándonos en los elementos que están dentro de un placeholder
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+          const position = zone.getAttribute('data-pos'); // Del 1 al 6 (Hueco)
+          const content = zone.querySelector('.drop-content .draggable-item');
+          
+          if (content) {
+            const stepId = content.getAttribute('data-step'); // Del 1 al 6 (Opción original)
+            document.getElementById(`p5_${stepId}`).value = position;
+          }
+        });
+      }
+    });
+  </script>
+  
 </body>
 </html>
