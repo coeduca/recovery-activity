@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" translate="no" class="notranslate">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
+  <meta http-equiv="Content-Language" content="es">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍲</text></svg>">
   <title>Actividad de Recuperación - 9° Grado</title>
   
@@ -616,10 +618,59 @@
       .part2-image img {
         max-height: none; /* Quitamos el límite de altura en escritorio */
       }
+
+
+    /* PROTECCIÓN DEL CONTENIDO
+       Evita la selección y el menú contextual visual sin impedir que el
+       estudiante escriba, seleccione opciones o use el drag & drop. */
+    html, body, body * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+    input, textarea, select, option {
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+      -webkit-touch-callout: default;
+    }
+    img {
+      -webkit-user-drag: none;
+      user-drag: none;
+      pointer-events: none;
+    }
+    #security-notice {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translate(-50%, 18px);
+      z-index: 1000000;
+      max-width: min(90vw, 520px);
+      padding: 12px 16px;
+      border: 3px solid #1a1a1a;
+      background: #FFE66D;
+      color: #1a1a1a;
+      box-shadow: 5px 5px 0 #1a1a1a;
+      font-family: 'Arial Black', Arial, sans-serif;
+      font-size: 0.9rem;
+      text-align: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s;
+    }
+    #security-notice.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, 0);
+    }
+
   </style>
   <script src="../rigo.js"></script>
 </head>
-<body>
+<body translate="no" class="notranslate">
 
   <div class="quiz-container">
     <div class="welcome-badge" id="student-tag">Cargando estudiante...</div>
@@ -971,6 +1022,84 @@
   </div>
 
   <rigo-mascot id="rigo-companion" grade="Noveno"></rigo-mascot>
+
+
+  <script>
+    /* CAPA ANTICOPIA / ANTIPEGADO / ANTITRADUCCIÓN
+       Es una barrera de interfaz: dificulta las acciones comunes del
+       navegador, pero ninguna página web puede impedirlas al 100 % si el
+       usuario modifica el navegador o el código. */
+    (() => {
+      'use strict';
+
+      const BLOCKED_MESSAGE = 'Esta actividad no permite copiar, cortar, pegar ni seleccionar contenido.';
+      let noticeTimer = null;
+
+      function showSecurityNotice(message = BLOCKED_MESSAGE) {
+        let notice = document.getElementById('security-notice');
+        if (!notice) {
+          notice = document.createElement('div');
+          notice.id = 'security-notice';
+          notice.setAttribute('role', 'status');
+          notice.setAttribute('aria-live', 'polite');
+          document.body.appendChild(notice);
+        }
+
+        notice.textContent = message;
+        notice.classList.add('visible');
+        clearTimeout(noticeTimer);
+        noticeTimer = setTimeout(() => notice.classList.remove('visible'), 2200);
+      }
+
+      function blockAction(event, message) {
+        event.preventDefault();
+        event.stopPropagation();
+        showSecurityNotice(message);
+        return false;
+      }
+
+      // Bloquea menú contextual, copiar, cortar y pegar, incluso dentro
+      // de inputs y textarea. Los estudiantes sí pueden escribir a mano.
+      ['copy', 'cut', 'paste', 'contextmenu'].forEach((eventName) => {
+        document.addEventListener(eventName, (event) => blockAction(event), true);
+      });
+
+      // Evita selección mediante arrastre fuera de los controles de entrada.
+      document.addEventListener('selectstart', (event) => {
+        const target = event.target;
+        const editable = target instanceof Element && target.closest('input, textarea, select');
+        if (!editable) blockAction(event, 'La selección de contenido está desactivada en esta actividad.');
+      }, true);
+
+      // Evita arrastrar imágenes o texto fuera de la actividad, pero conserva
+      // el sistema personalizado de arrastrar y soltar de la Parte V.
+      document.addEventListener('dragstart', (event) => {
+        const customDragItem = event.target instanceof Element && event.target.closest('.draggable-item');
+        if (!customDragItem) blockAction(event, 'No se permite arrastrar contenido fuera de la actividad.');
+      }, true);
+
+      // Atajos comunes de Windows, Linux, macOS y teclas Insert.
+      document.addEventListener('keydown', (event) => {
+        const key = event.key.toLowerCase();
+        const modifier = event.ctrlKey || event.metaKey;
+        const blockedShortcut = modifier && ['c', 'x', 'v'].includes(key);
+        const insertShortcut = (event.shiftKey || event.ctrlKey) && key === 'insert';
+
+        if (blockedShortcut || insertShortcut) {
+          blockAction(event);
+        }
+      }, true);
+
+      // Refuerza la indicación para servicios de traducción que observen
+      // atributos agregados dinámicamente.
+      document.documentElement.setAttribute('translate', 'no');
+      document.documentElement.classList.add('notranslate');
+      document.addEventListener('DOMContentLoaded', () => {
+        document.body.setAttribute('translate', 'no');
+        document.body.classList.add('notranslate');
+      }, { once: true });
+    })();
+  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
